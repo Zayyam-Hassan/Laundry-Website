@@ -1,0 +1,112 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, Phone , Download} from 'lucide-react';
+
+const CallToAction = ({
+  headline,
+  description,
+  stats,
+  primaryButton,
+  secondaryButton,
+  footerText,
+}) => {
+  return (
+    <div className="bg-gradient-to-tr from-gray-900 via-slate-900 to-teal-900">
+      <div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8 text-center">
+        <h2 className="text-3xl font-extrabold text-white sm:text-4xl font-serif">
+          {headline}
+        </h2>
+        <p className="mt-4 max-w-3xl mx-auto text-base text-gray-300">
+          {description}
+        </p>
+
+        {/* Stats Section */}
+        {stats && (
+          <div className="mt-10 max-w-2xl mx-auto">
+            <div className="rounded-lg bg-teal-900/30 p-8">
+              <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
+                {stats.map((stat) => (
+                  <div key={stat.label} className="flex flex-col items-center">
+                    <dt className="text-4xl font-bold text-yellow-400">{stat.value}</dt>
+                    <dd className="mt-2 text-sm text-gray-300">{stat.label}</dd>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Buttons Section */}
+        <div className="mt-8 flex justify-center items-center flex-wrap gap-4">
+          {primaryButton && (
+            <Link
+              to={primaryButton.link}
+              className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-semibold rounded-full text-teal-900 bg-yellow-400 hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 focus:ring-offset-gray-900"
+            >
+              {primaryButton.text}
+              {primaryButton.Icon && <primaryButton.Icon className="ml-2 h-5 w-5" />}
+            </Link>
+          )}
+          {secondaryButton && (
+            <Link
+              to={secondaryButton.link}
+              className="inline-flex items-center justify-center px-6 py-3 border-2 border-teal-400 text-sm font-semibold rounded-full text-white bg-transparent hover:bg-teal-400/10 transition-all duration-300 transform hover:scale-105 shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-400 focus:ring-offset-gray-900"
+            >
+              {secondaryButton.text}
+              {secondaryButton.Icon && <secondaryButton.Icon className="ml-2 h-5 w-5" />}
+            </Link>
+          )}
+        </div>
+
+        {/* Footer Text */}
+        {footerText && (
+          <p className="mt-6 text-xs text-gray-400">{footerText}</p>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default CallToAction; 
+{/* <CallToAction
+  headline="Ready to Experience Premium Laundry Care?"
+  description="Join thousands of satisfied customers who have made the switch to convenient, luxury laundry service."
+  primaryButton={{
+    text: "Start Your Subscription",
+    link: "/subscribe",
+    Icon: ArrowRight
+  }}
+  secondaryButton={{
+    text: "Contact Us",
+    link: "/contact",
+    Icon: Phone
+  }}
+/> */}
+{/* <CallToAction
+  headline="Ready to Simplify Your Laundry Routine?"
+  description="Join FarrariGo today and experience the convenience of premium laundry service."
+  primaryButton={{
+    text: "Start Your Subscription",
+    link: "/subscribe",
+    Icon: ArrowRight
+  }}
+  secondaryButton={{
+    text: "Learn More",
+    link: "/learn-more"
+  }}
+/> */}
+{/* <CallToAction
+  headline="Download Our Complete Care Guide"
+  description="Get our comprehensive fabric care booklet with detailed instructions, stain removal tips, and professional recommendations."
+  stats={[
+    { value: '50+', label: 'Fabric Types Covered' },
+    { value: '100+', label: 'Care Instructions' },
+    { value: '25+', label: 'Stain Solutions' }
+  ]}
+  primaryButton={{
+    text: "Download Care Guide (PDF)",
+    link: "/download-guide",
+    Icon: Download
+  }}
+  footerText="Free download • 2.5MB • Available in English and Arabic"
+/> */}
