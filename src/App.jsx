@@ -7,12 +7,15 @@ import PricingPlans from './components/PricingPlans/Pricing';
 import BusinessProposalForm from './components/BusinessProposal/proposal';
 import FindOurLocation from './components/LocateUs/location';
 import PickupScheduleForm from './components/SubscribeNow/Subscribe';
+import OurServices from './pages/OurSevices/OurServices';
 const App = () => {
   
 
   return (
     <div>
-      <PickupScheduleForm/>
+      {/* <PickupScheduleForm/> */}
+      <Home/>
+      {/* <OurServices/> */}
     </div>
   )
 }

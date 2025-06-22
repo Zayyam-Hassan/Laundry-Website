@@ -54,57 +54,111 @@ const Home = () => {
     ],
   };
 
-  const deepBlueDarkMode = {
-    // Apply your specific gradient using Tailwind's arbitrary value syntax
-    bgColor: "bg-[linear-gradient(115deg,#005495,#000041)]",
-
-    // These text colors are optimized for a dark background
+  const heroTheme = {
+    bgColor: "bg-[linear-gradient(135deg,#0f172a_0%,#1e1b4b_25%,#312e81_50%,#1e1b4b_75%,#0f172a_100%)]", // Much darker, more dramatic gradient
     titleColor: "text-white",
+    subtitleColor: "text-gray-300",
     featureNumberBg: "bg-yellow-400",
     featureNumberColor: "text-black",
     featureTitleColor: "text-white",
     featureDescriptionColor: "text-gray-300",
+    primaryButtonBg: "bg-yellow-400",
+    primaryButtonText: "text-black",
+    primaryButtonHover: "hover:bg-yellow-500",
+    secondaryButtonBg: "bg-transparent",
+    secondaryButtonText: "text-white",
+    secondaryButtonBorder: "border-white/30",
+    secondaryButtonHover: "hover:bg-white/10 hover:border-white", // Deep blue gradient
+    titleColor: "text-white",
+    subtitleColor: "text-gray-300",
+    featureNumberBg: "bg-yellow-400",
+    featureNumberColor: "text-black",
+    featureTitleColor: "text-white",
+    featureDescriptionColor: "text-gray-300",
+    primaryButtonBg: "bg-yellow-400",
+    primaryButtonText: "text-black",
+    primaryButtonHover: "hover:bg-yellow-500",
+    secondaryButtonBg: "bg-transparent",
+    secondaryButtonText: "text-white",
+    secondaryButtonBorder: "border-white",
+    secondaryButtonHover: "hover:bg-white hover:text-gray-900",
+  };
+
+  // Professional care tips theme (like your second image)
+  const professionalCareTheme = {
+    bgColor: "bg-gray-50",
+    titleColor: "text-indigo-900",
+    subtitleColor: "text-gray-600",
+    featureNumberBg: "bg-yellow-400",
+    featureNumberColor: "text-black",
+    featureTitleColor: "text-indigo-900",
+    featureDescriptionColor: "text-gray-600",
+    decorativeAccent: "bg-yellow-100",
   };
 
   const professionalCareTips = [
     {
       title: "Read Care Labels",
-      description:
-        "Always check garment care labels before treatment. Our experts follow manufacturer guidelines while applying our premium techniques.",
+      description: "Always check garment care labels before treatment. Our experts follow manufacturer guidelines while applying our premium techniques.",
     },
     {
       title: "Treat Stains Quickly",
-      description:
-        "The sooner stains are treated, the better the results. Our pickup service ensures rapid professional treatment.",
+      description: "The sooner stains are treated, the better the results. Our pickup service ensures rapid professional treatment.",
     },
     {
       title: "Proper Storage",
-      description:
-        "We return your garments in protective packaging. Store them properly to maintain their fresh, clean condition.",
+      description: "We return your garments in protective packaging. Store them properly to maintain their fresh, clean condition.",
     },
     {
       title: "Regular Professional Care",
-      description:
-        "Regular professional cleaning extends garment life and maintains appearance better than home washing alone.",
+      description: "Regular professional cleaning extends garment life and maintains appearance better than home washing alone.",
     },
   ];
   return (
     <div>
       <Navbar />
       <Feature
+        layout="hero"
+        title="Luxury Laundry. Effortlessly Delivered."
+        subtitle="FarrariGo is Kuwait's first premium, subscription-based laundry service. Elegant care. Exceptional convenience."
+        buttons={[
+          {
+            text: "Subscribe Now",
+            variant: "primary",
+            icon: ArrowRight,
+          },
+          {
+            text: "How It Works",
+            variant: "secondary",
+          },
+        ]}
+        image={{
+          src: "https://images.pexels.com/photos/6195125/pexels-photo-6195125.jpeg?auto=compress&cs=tinysrgb&w=600&h=800&fit=crop",
+          alt: "Professional cleaning crew",
+        }}
+        stat={{
+          label: "Premium Quality",
+          value: "Guaranteed Excellence",
+        }}
+        theme={heroTheme}
+      />
+
+      {/* Professional Care Tips Section - Second Image Style */}
+      {/* <Feature
+        layout="features"
         title="Professional Care Tips"
         features={professionalCareTips}
         image={{
-          src:
-            "https://images.pexels.com/photos/6195125/pexels-photo-6195125.jpeg?auto=compress&cs=tinysrgb&w=600&h=800&fit=crop",
+          src: "https://images.pexels.com/photos/6195125/pexels-photo-6195125.jpeg?auto=compress&cs=tinysrgb&w=600&h=800&fit=crop",
           alt: "Professional cleaning crew",
         }}
         stat={{
           value: "99.9%",
           label: "Stain Removal Success",
         }}
-        theme={deepBlueDarkMode}
-      />
+        theme={professionalCareTheme}
+      /> */}
+
       <Statistics />
       <Tracking
         title="Manage Everything from Your Phone"

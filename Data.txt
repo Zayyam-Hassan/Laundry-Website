@@ -1,0 +1,343 @@
+import { 
+  CheckCircle, Shield, Eye, MessageCircle, Gift, Heart, 
+  Truck, Star, Calendar, Building2, Award, Users, 
+  Sparkles, Clock, ThumbsUp 
+} from 'lucide-react';
+
+// 1. Laundry Solutions for Businesses
+<FeatureForAll
+  title="Laundry Solutions for Businesses"
+  subtitle="Partner with FarrariGo to provide premium laundry services for your business. Professional solutions for hotels, salons, gyms, clinics, and offices."
+  highlightText="Trusted by 500+ Businesses in Kuwait"
+  highlightIcon={CheckCircle}
+  showFeatures={true}
+  features={[
+    {
+      icon: Building2,
+      title: "Multi-Industry Solutions",
+      description: "Specialized services for hotels, salons, gyms, clinics, and corporate offices"
+    },
+    {
+      icon: Award,
+      title: "Commercial Grade Quality",
+      description: "Industrial-strength cleaning with professional finishing for business standards"
+    },
+    {
+      icon: Users,
+      title: "Volume Discounts",
+      description: "Competitive pricing with special rates for high-volume business partnerships"
+    }
+  ]}
+/>
+
+// 2. Fabric & Garment Care Guide
+<FeatureForAll
+  title="Fabric & Garment Care Guide"
+  subtitle="Discover how our expert team provides specialized care for every type of fabric, ensuring your garments receive the perfect treatment they deserve."
+  highlightText="Expert Care for Every Fabric"
+  highlightIcon={Shield}
+  showFeatures={true}
+  features={[
+    {
+      icon: Sparkles,
+      title: "Specialized Treatments",
+      description: "Custom care protocols for silk, wool, cotton, synthetic blends, and delicate fabrics"
+    },
+    {
+      icon: Eye,
+      title: "Pre-Treatment Analysis",
+      description: "Thorough fabric inspection and stain assessment before processing begins"
+    },
+    {
+      icon: ThumbsUp,
+      title: "Gentle Processing",
+      description: "Temperature-controlled washing and drying to preserve fabric integrity and color"
+    }
+  ]}
+  theme={{
+    highlightColor: "text-blue-400",
+    highlightBg: "bg-blue-400/10",
+    highlightBorder: "border-blue-400/30",
+    featureIconColor: "text-blue-400"
+  }}
+/>
+
+// 3. Behind the Scenes: Our Process
+<FeatureForAll
+  title="Behind the Scenes: Our Process"
+  subtitle="Discover the meticulous care and attention that goes into every step of our premium laundry service. From pickup to delivery, we ensure excellence at every stage."
+  highlightText="Transparency in Every Step"
+  highlightIcon={CheckCircle}
+  showFeatures={true}
+  features={[
+    {
+      icon: Truck,
+      title: "Professional Pickup",
+      description: "Scheduled collection with detailed inventory and special handling instructions"
+    },
+    {
+      icon: Shield,
+      title: "Quality Processing",
+      description: "Multi-stage cleaning process with quality checks at every step"
+    },
+    {
+      icon: Clock,
+      title: "Timely Delivery",
+      description: "On-time delivery with real-time tracking and delivery confirmation"
+    }
+  ]}
+  theme={{
+    highlightColor: "text-green-400",
+    highlightBg: "bg-green-400/10",
+    highlightBorder: "border-green-400/30",
+    featureIconColor: "text-green-400"
+  }}
+/>
+
+// 4. Contact Us
+<FeatureForAll
+  title="Contact Us"
+  subtitle="We're here to help with any questions about our premium laundry services. Get in touch with our friendly team."
+  highlightText="Live Chat Available 24/7"
+  highlightIcon={MessageCircle}
+  showFeatures={true}
+  features={[
+    {
+      icon: MessageCircle,
+      title: "Instant Support",
+      description: "Real-time assistance through live chat, phone, and messaging platforms"
+    },
+    {
+      icon: Users,
+      title: "Dedicated Account Manager",
+      description: "Personal point of contact for business clients and premium service members"
+    },
+    {
+      icon: Clock,
+      title: "Quick Response Time",
+      description: "Average response time under 2 minutes for urgent inquiries and support"
+    }
+  ]}
+  theme={{
+    highlightColor: "text-purple-400",
+    highlightBg: "bg-purple-400/10",
+    highlightBorder: "border-purple-400/30",
+    featureIconColor: "text-purple-400"
+  }}
+/>
+
+// 5. Gift Cards & Referrals
+<FeatureForAll
+  title="Gift Cards & Referrals"
+  subtitle="Share the gift of premium laundry care with friends and family. Perfect for any occasion, our gift cards bring convenience and luxury to those you care about."
+  highlightText="Digital & Physical Cards"
+  highlightIcon={Gift}
+  showFeatures={true}
+  features={[
+    {
+      icon: Heart,
+      title: "Perfect for Any Occasion",
+      description: "Birthdays, holidays, housewarmings, or just showing you care"
+    },
+    {
+      icon: Users,
+      title: "Referral Rewards",
+      description: "Earn credits when friends sign up using your referral code"
+    },
+    {
+      icon: Sparkles,
+      title: "Flexible Denominations",
+      description: "Choose from preset amounts or create custom gift card values"
+    }
+  ]}
+  theme={{
+    highlightColor: "text-pink-400",
+    highlightBg: "bg-pink-400/10",
+    highlightBorder: "border-pink-400/30",
+    featureIconColor: "text-pink-400"
+  }}
+/>
+
+// 6. Start Your Premium Laundry Experience
+<FeatureForAll
+  title="Start Your Premium Laundry Experience"
+  subtitle="Fill out the form below to schedule your first pickup and join thousands of satisfied customers who trust FarrariGo for their laundry needs."
+  highlightText="Free Pickup"
+  highlightIcon={Truck}
+  showFeatures={true}
+  features={[
+    {
+      icon: Star,
+      title: "Premium Quality",
+      description: "Professional-grade cleaning with attention to every detail and fabric type"
+    },
+    {
+      icon: Calendar,
+      title: "Flexible Scheduling",
+      description: "Choose pickup and delivery times that work with your busy lifestyle"
+    },
+    {
+      icon: CheckCircle,
+      title: "Satisfaction Guarantee",
+      description: "100% satisfaction promise with free re-cleaning if you're not completely happy"
+    }
+  ]}
+/>
+
+
+//Updated By Removing the theme colors
+        <FeatureForAll
+  title="Laundry Solutions for Businesses"
+  subtitle="Partner with FarrariGo to provide premium laundry services for your business. Professional solutions for hotels, salons, gyms, clinics, and offices."
+  highlightText="Trusted by 500+ Businesses in Kuwait"
+  highlightIcon={CheckCircle}
+  showFeatures={true}
+  features={[
+    {
+      icon: Building2,
+      title: "Multi-Industry Solutions",
+      description: "Specialized services for hotels, salons, gyms, clinics, and corporate offices"
+    },
+    {
+      icon: Award,
+      title: "Commercial Grade Quality",
+      description: "Industrial-strength cleaning with professional finishing for business standards"
+    },
+    {
+      icon: Users,
+      title: "Volume Discounts",
+      description: "Competitive pricing with special rates for high-volume business partnerships"
+    }
+  ]}
+/>
+<FeatureForAll
+  title="Fabric & Garment Care Guide"
+  subtitle="Discover how our expert team provides specialized care for every type of fabric, ensuring your garments receive the perfect treatment they deserve."
+  highlightText="Expert Care for Every Fabric"
+  highlightIcon={Shield}
+  showFeatures={true}
+  features={[
+    {
+      icon: Sparkles,
+      title: "Specialized Treatments",
+      description: "Custom care protocols for silk, wool, cotton, synthetic blends, and delicate fabrics"
+    },
+    {
+      icon: Eye,
+      title: "Pre-Treatment Analysis",
+      description: "Thorough fabric inspection and stain assessment before processing begins"
+    },
+    {
+      icon: ThumbsUp,
+      title: "Gentle Processing",
+      description: "Temperature-controlled washing and drying to preserve fabric integrity and color"
+    }
+  ]}
+/>
+<FeatureForAll
+  title="Behind the Scenes: Our Process"
+  subtitle="Discover the meticulous care and attention that goes into every step of our premium laundry service. From pickup to delivery, we ensure excellence at every stage."
+  highlightText="Transparency in Every Step"
+  highlightIcon={CheckCircle}
+  showFeatures={true}
+  features={[
+    {
+      icon: Truck,
+      title: "Professional Pickup",
+      description: "Scheduled collection with detailed inventory and special handling instructions"
+    },
+    {
+      icon: Shield,
+      title: "Quality Processing",
+      description: "Multi-stage cleaning process with quality checks at every step"
+    },
+    {
+      icon: Clock,
+      title: "Timely Delivery",
+      description: "On-time delivery with real-time tracking and delivery confirmation"
+    }
+  ]}
+  theme={{
+    highlightColor: "text-green-400",
+    highlightBg: "bg-green-400/10",
+    highlightBorder: "border-green-400/30",
+    featureIconColor: "text-green-400"
+  }}
+/>
+<FeatureForAll
+  title="Contact Us"
+  subtitle="We're here to help with any questions about our premium laundry services. Get in touch with our friendly team."
+  highlightText="Live Chat Available 24/7"
+  highlightIcon={MessageCircle}
+  showFeatures={true}
+  features={[
+    {
+      icon: MessageCircle,
+      title: "Instant Support",
+      description: "Real-time assistance through live chat, phone, and messaging platforms"
+    },
+    {
+      icon: Users,
+      title: "Dedicated Account Manager",
+      description: "Personal point of contact for business clients and premium service members"
+    },
+    {
+      icon: Clock,
+      title: "Quick Response Time",
+      description: "Average response time under 2 minutes for urgent inquiries and support"
+    }
+  ]}
+  theme={{
+    highlightColor: "text-green-400",
+  }}
+/>
+<FeatureForAll
+  title="Gift Cards & Referrals"
+  subtitle="Share the gift of premium laundry care with friends and family. Perfect for any occasion, our gift cards bring convenience and luxury to those you care about."
+  highlightText="Digital & Physical Cards"
+  highlightIcon={Gift}
+  showFeatures={true}
+  features={[
+    {
+      icon: Heart,
+      title: "Perfect for Any Occasion",
+      description: "Birthdays, holidays, housewarmings, or just showing you care"
+    },
+    {
+      icon: Users,
+      title: "Referral Rewards",
+      description: "Earn credits when friends sign up using your referral code"
+    },
+    {
+      icon: Sparkles,
+      title: "Flexible Denominations",
+      description: "Choose from preset amounts or create custom gift card values"
+    }
+  ]}
+/>
+
+
+<FeatureForAll
+  title="Start Your Premium Laundry Experience"
+  subtitle="Fill out the form below to schedule your first pickup and join thousands of satisfied customers who trust FarrariGo for their laundry needs."
+  highlightText="Free Pickup"
+  highlightIcon={Truck}
+  showFeatures={true}
+  features={[
+    {
+      icon: Star,
+      title: "Premium Quality",
+      description: "Professional-grade cleaning with attention to every detail and fabric type"
+    },
+    {
+      icon: Calendar,
+      title: "Flexible Scheduling",
+      description: "Choose pickup and delivery times that work with your busy lifestyle"
+    },
+    {
+      icon: CheckCircle,
+      title: "Satisfaction Guarantee",
+      description: "100% satisfaction promise with free re-cleaning if you're not completely happy"
+    }
+  ]}
+/>
