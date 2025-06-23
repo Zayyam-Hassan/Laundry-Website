@@ -14,8 +14,8 @@ const App = () => {
   return (
     <div>
       {/* <PickupScheduleForm/> */}
-      <Home/>
-      {/* <OurServices/> */}
+      {/* <Home/> */}
+      <OurServices/>
     </div>
   )
 }

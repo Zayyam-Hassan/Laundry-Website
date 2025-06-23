@@ -54,7 +54,7 @@ const FeatureForAll = ({
         <div className="max-w-4xl mx-auto text-center">
           {/* Main Title */}
           {title && (
-            <h1 className={`text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 sm:mb-8 ${defaultTheme.titleColor} leading-tight`}>
+            <h1 className={`text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 sm:mb-8 ${defaultTheme.titleColor} leading-tight mt-2.5`}>
               <span className="inline-block animate-fade-in-up">
                 {title}
               </span>
