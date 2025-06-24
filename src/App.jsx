@@ -10,6 +10,9 @@ import PickupScheduleForm from './components/SubscribeNow/Subscribe';
 import OurServices from './pages/OurSevices/OurServices';
 import Fabrics from './pages/Fabrics/Fabrics';
 import OurProcess from './pages/OurProcess/OurProcess';
+import GetInTouchForm from './components/ContactUs/contactUs';
+import ReferralComponent from './components/ReferralCodes/ReferralCode';
+import FAQ from './components/FrequentlyAskedQuestions/FAQ';
 const App = () => {
   return (
     <div>
@@ -19,8 +22,9 @@ const App = () => {
       {/* <BusinessProposalForm/> */}
       {/* <FindOurLocation/> */}
       {/* <Fabrics/> */}
-      <OurProcess/>
-
+      <GetInTouchForm/>
+      <ReferralComponent/>
+      <FAQ/>
     </div>
   )
 }
