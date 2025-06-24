@@ -84,36 +84,7 @@ const Home = () => {
     secondaryButtonHover: "hover:bg-white hover:text-gray-900",
   };
 
-  // Professional care tips theme (like your second image)
-  const professionalCareTheme = {
-    bgColor: "bg-gray-50",
-    titleColor: "text-indigo-900",
-    subtitleColor: "text-gray-600",
-    featureNumberBg: "bg-yellow-400",
-    featureNumberColor: "text-black",
-    featureTitleColor: "text-indigo-900",
-    featureDescriptionColor: "text-gray-600",
-    decorativeAccent: "bg-yellow-100",
-  };
-
-  const professionalCareTips = [
-    {
-      title: "Read Care Labels",
-      description: "Always check garment care labels before treatment. Our experts follow manufacturer guidelines while applying our premium techniques.",
-    },
-    {
-      title: "Treat Stains Quickly",
-      description: "The sooner stains are treated, the better the results. Our pickup service ensures rapid professional treatment.",
-    },
-    {
-      title: "Proper Storage",
-      description: "We return your garments in protective packaging. Store them properly to maintain their fresh, clean condition.",
-    },
-    {
-      title: "Regular Professional Care",
-      description: "Regular professional cleaning extends garment life and maintains appearance better than home washing alone.",
-    },
-  ];
+  
   return (
     <div>
       <Navbar />
@@ -142,23 +113,6 @@ const Home = () => {
         }}
         theme={heroTheme}
       />
-
-      {/* Professional Care Tips Section - Second Image Style */}
-      {/* <Feature
-        layout="features"
-        title="Professional Care Tips"
-        features={professionalCareTips}
-        image={{
-          src: "https://images.pexels.com/photos/6195125/pexels-photo-6195125.jpeg?auto=compress&cs=tinysrgb&w=600&h=800&fit=crop",
-          alt: "Professional cleaning crew",
-        }}
-        stat={{
-          value: "99.9%",
-          label: "Stain Removal Success",
-        }}
-        theme={professionalCareTheme}
-      /> */}
-
       <Statistics />
       <Tracking
         title="Manage Everything from Your Phone"

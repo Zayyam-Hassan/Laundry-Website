@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 export default function FindOurLocation() {
   const [isHovered, setIsHovered] = useState(false);
@@ -7,19 +7,30 @@ export default function FindOurLocation() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
       <div className="w-full max-w-5xl">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-blue-900 mb-4">
-            Find Our Location
-          </h1>
-          <p className="text-gray-600 text-lg">
-            Visit our facility in Shuwaikh Industrial Area for in-person assistance.
-          </p>
+        <div className="text-center mb-8 relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 blur-3xl rounded-full animate-pulse"></div>
+          <div className="relative">
+            <div className="relative inline-block">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 bg-clip-text text-transparent mb-4 leading-tight tracking-tight">
+                Find Our Location
+              </h1>
+              {/* Animated underline */}
+              <div
+                className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 rounded-full transition-all duration-1000 delay-500"
+                style={{ width: "50%" }}
+              />
+            </div>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed font-medium mt-6">
+              Visit our facility in Shuwaikh Industrial Area for in-person
+              assistance.
+            </p>
+          </div>
         </div>
 
         {/* Map Container */}
-        <div 
+        <div
           className={`bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200 transition-transform duration-300 ${
-            isHovered ? 'scale-105' : 'scale-100'
+            isHovered ? "scale-105" : "scale-100"
           }`}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
@@ -35,18 +46,6 @@ export default function FindOurLocation() {
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
-          </div>
-        </div>
-
-        {/* Address Information */}
-        <div className="mt-6 bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
-          <div className="text-center">
-            <h3 className="font-semibold text-blue-900 mb-3 text-lg">Our Address</h3>
-            <div className="text-gray-600 space-y-1">
-              <div>Industrial Area 3, Block D</div>
-              <div>Street 58/59, Reef Square Building</div>
-              <div className="font-medium text-blue-900">Shuwaikh, Kuwait</div>
-            </div>
           </div>
         </div>
       </div>

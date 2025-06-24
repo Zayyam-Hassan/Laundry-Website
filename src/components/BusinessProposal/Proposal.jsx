@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { AlertCircle, CheckCircle2, Send, Sparkles } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { AlertCircle, CheckCircle2, Send, Sparkles } from "lucide-react";
 
 const BusinessProposalForm = () => {
   const [formData, setFormData] = useState({
-    businessName: '',
-    contactPerson: '',
-    email: '',
-    phone: '',
-    businessType: '',
-    monthlyVolume: '',
-    additionalRequirements: ''
+    businessName: "",
+    contactPerson: "",
+    email: "",
+    phone: "",
+    businessType: "",
+    monthlyVolume: "",
+    additionalRequirements: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -18,94 +18,107 @@ const BusinessProposalForm = () => {
   const [showSuccess, setShowSuccess] = useState(false);
 
   const businessTypes = [
-    'Select Business Type',
-    'Hotel & Hospitality',
-    'Restaurant & Food Service',
-    'Healthcare & Medical',
-    'Salon & Spa',
-    'Gym & Fitness Center',
-    'Office & Corporate',
-    'Retail & Shopping',
-    'Residential Building',
-    'Educational Institution',
-    'Manufacturing & Industrial',
-    'Other'
+    "Select Business Type",
+    "Hotel & Hospitality",
+    "Restaurant & Food Service",
+    "Healthcare & Medical",
+    "Salon & Spa",
+    "Gym & Fitness Center",
+    "Office & Corporate",
+    "Retail & Shopping",
+    "Residential Building",
+    "Educational Institution",
+    "Manufacturing & Industrial",
+    "Other",
   ];
 
   const volumeOptions = [
-    'Select Monthly Volume',
-    'Less than 100 kg',
-    '100 - 500 kg',
-    '500 - 1,000 kg',
-    '1,000 - 2,500 kg',
-    '2,500 - 5,000 kg',
-    'More than 5,000 kg'
+    "Select Monthly Volume",
+    "Less than 100 kg",
+    "100 - 500 kg",
+    "500 - 1,000 kg",
+    "1,000 - 2,500 kg",
+    "2,500 - 5,000 kg",
+    "More than 5,000 kg",
   ];
 
   // Input sanitization functions
   const sanitizeTextInput = (value, allowNumbers = false) => {
     if (allowNumbers) {
       // Allow letters, numbers, spaces, and common business characters
-      return value.replace(/[^a-zA-Z0-9\s&.,'-]/g, '');
+      return value.replace(/[^a-zA-Z0-9\s&.,'-]/g, "");
     } else {
       // Only allow letters, numbers, spaces, and basic punctuation for names
-      return value.replace(/[^a-zA-Z0-9\s'-]/g, '');
+      return value.replace(/[^a-zA-Z0-9\s'-]/g, "");
     }
   };
 
   const sanitizePhoneInput = (value) => {
     // Only allow numbers, spaces, hyphens, parentheses, and plus sign
-    return value.replace(/[^0-9\s\-\(\)\+]/g, '');
+    return value.replace(/[^0-9\s\-\(\)\+]/g, "");
   };
 
   const sanitizeEmailInput = (value) => {
     // Allow alphanumeric, @, ., -, _, and common email characters
-    return value.replace(/[^a-zA-Z0-9@._-]/g, '').toLowerCase();
+    return value.replace(/[^a-zA-Z0-9@._-]/g, "").toLowerCase();
   };
 
   const validateField = (name, value, isSubmit = false) => {
     switch (name) {
-      case 'businessName':
-        if (isSubmit && !value.trim()) return 'Business name is required';
-        if (value.trim() && value.trim().length > 100) return 'Business name must be less than 100 characters';
-        return '';
-      
-      case 'contactPerson':
-        if (isSubmit && !value.trim()) return 'Contact person name is required';
-        if (value.trim() && value.trim().length > 50) return 'Name must be less than 50 characters';
-        return '';
-      
-      case 'email':
-        if (isSubmit && !value.trim()) return 'Email address is required';
+      case "businessName":
+        if (isSubmit && !value.trim()) return "Business name is required";
+        if (value.trim() && value.trim().length > 100)
+          return "Business name must be less than 100 characters";
+        return "";
+
+      case "contactPerson":
+        if (isSubmit && !value.trim()) return "Contact person name is required";
+        if (value.trim() && value.trim().length > 50)
+          return "Name must be less than 50 characters";
+        return "";
+
+      case "email":
+        if (isSubmit && !value.trim()) return "Email address is required";
         if (value.trim()) {
           const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-          if (!emailRegex.test(value.trim())) return 'Please enter a valid email address';
-          if (value.length > 254) return 'Email address is too long';
+          if (!emailRegex.test(value.trim()))
+            return "Please enter a valid email address";
+          if (value.length > 254) return "Email address is too long";
         }
-        return '';
-      
-      case 'phone':
-        if (isSubmit && !value.trim()) return 'Phone number is required';
+        return "";
+
+      case "phone":
+        if (isSubmit && !value.trim()) return "Phone number is required";
         if (value.trim()) {
-          const cleanPhone = value.replace(/[\s\-\(\)]/g, '');
-          if (!/^\+?[1-9]\d{7,14}$/.test(cleanPhone)) return 'Please enter a valid phone number (8-15 digits)';
+          const cleanPhone = value.replace(/[\s\-\(\)]/g, "");
+          if (!/^\+?[1-9]\d{7,14}$/.test(cleanPhone))
+            return "Please enter a valid phone number (8-15 digits)";
         }
-        return '';
-      
-      case 'businessType':
-        if (isSubmit && (!value || value === '' || value === 'Select Business Type')) return 'Please select a business type';
-        return '';
-      
-      case 'monthlyVolume':
-        if (isSubmit && (!value || value === '' || value === 'Select Monthly Volume')) return 'Please select estimated monthly laundry volume';
-        return '';
-      
-      case 'additionalRequirements':
-        if (value.length > 1000) return 'Additional requirements must be less than 1000 characters';
-        return '';
-      
+        return "";
+
+      case "businessType":
+        if (
+          isSubmit &&
+          (!value || value === "" || value === "Select Business Type")
+        )
+          return "Please select a business type";
+        return "";
+
+      case "monthlyVolume":
+        if (
+          isSubmit &&
+          (!value || value === "" || value === "Select Monthly Volume")
+        )
+          return "Please select estimated monthly laundry volume";
+        return "";
+
+      case "additionalRequirements":
+        if (value.length > 1000)
+          return "Additional requirements must be less than 1000 characters";
+        return "";
+
       default:
-        return '';
+        return "";
     }
   };
 
@@ -115,56 +128,76 @@ const BusinessProposalForm = () => {
 
     // Apply input sanitization based on field type
     switch (name) {
-      case 'businessName':
+      case "businessName":
         sanitizedValue = sanitizeTextInput(value, true);
         break;
-      case 'contactPerson':
+      case "contactPerson":
         sanitizedValue = sanitizeTextInput(value, true);
         break;
-      case 'email':
+      case "email":
         sanitizedValue = sanitizeEmailInput(value);
         break;
-      case 'phone':
+      case "phone":
         sanitizedValue = sanitizePhoneInput(value);
         break;
-      case 'additionalRequirements':
+      case "additionalRequirements":
         // Allow more characters for requirements but prevent harmful content
-        sanitizedValue = value.replace(/[<>]/g, '');
+        sanitizedValue = value.replace(/[<>]/g, "");
         break;
       default:
         break;
     }
 
-    setFormData(prev => ({ ...prev, [name]: sanitizedValue }));
-    
+    setFormData((prev) => ({ ...prev, [name]: sanitizedValue }));
+
     if (touched[name]) {
       const error = validateField(name, sanitizedValue);
-      setErrors(prev => ({ ...prev, [name]: error }));
+      setErrors((prev) => ({ ...prev, [name]: error }));
     }
   };
 
   const handleKeyPress = (e, fieldName) => {
     // Prevent certain characters from being entered
     const char = e.key;
-    
+
     switch (fieldName) {
-      case 'businessName':
-        if (!/[a-zA-Z0-9\s&.,'-]/.test(char) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(char)) {
+      case "businessName":
+        if (
+          !/[a-zA-Z0-9\s&.,'-]/.test(char) &&
+          !["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"].includes(
+            char
+          )
+        ) {
           e.preventDefault();
         }
         break;
-      case 'contactPerson':
-        if (!/[a-zA-Z0-9\s'-]/.test(char) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(char)) {
+      case "contactPerson":
+        if (
+          !/[a-zA-Z0-9\s'-]/.test(char) &&
+          !["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"].includes(
+            char
+          )
+        ) {
           e.preventDefault();
         }
         break;
-      case 'phone':
-        if (!/[0-9\s\-\(\)\+]/.test(char) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(char)) {
+      case "phone":
+        if (
+          !/[0-9\s\-\(\)\+]/.test(char) &&
+          !["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"].includes(
+            char
+          )
+        ) {
           e.preventDefault();
         }
         break;
-      case 'email':
-        if (!/[a-zA-Z0-9@._-]/.test(char) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(char)) {
+      case "email":
+        if (
+          !/[a-zA-Z0-9@._-]/.test(char) &&
+          !["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"].includes(
+            char
+          )
+        ) {
           e.preventDefault();
         }
         break;
@@ -175,20 +208,20 @@ const BusinessProposalForm = () => {
 
   const handlePaste = (e, fieldName) => {
     e.preventDefault();
-    const paste = (e.clipboardData || window.clipboardData).getData('text');
+    const paste = (e.clipboardData || window.clipboardData).getData("text");
     let sanitizedPaste = paste;
 
     switch (fieldName) {
-      case 'businessName':
+      case "businessName":
         sanitizedPaste = sanitizeTextInput(paste, true);
         break;
-      case 'contactPerson':
+      case "contactPerson":
         sanitizedPaste = sanitizeTextInput(paste, true);
         break;
-      case 'email':
+      case "email":
         sanitizedPaste = sanitizeEmailInput(paste);
         break;
-      case 'phone':
+      case "phone":
         sanitizedPaste = sanitizePhoneInput(paste);
         break;
       default:
@@ -199,31 +232,34 @@ const BusinessProposalForm = () => {
     const start = target.selectionStart;
     const end = target.selectionEnd;
     const currentValue = target.value;
-    const newValue = currentValue.substring(0, start) + sanitizedPaste + currentValue.substring(end);
+    const newValue =
+      currentValue.substring(0, start) +
+      sanitizedPaste +
+      currentValue.substring(end);
 
-    setFormData(prev => ({ ...prev, [fieldName]: newValue }));
-    
+    setFormData((prev) => ({ ...prev, [fieldName]: newValue }));
+
     // Validate the new value
     const error = validateField(fieldName, newValue);
-    setErrors(prev => ({ ...prev, [fieldName]: error }));
+    setErrors((prev) => ({ ...prev, [fieldName]: error }));
   };
 
   const handleBlur = (e) => {
     const { name, value } = e.target;
     // Only set touched and validate if user has entered something
-    if (value.trim() !== '') {
-      setTouched(prev => ({ ...prev, [name]: true }));
+    if (value.trim() !== "") {
+      setTouched((prev) => ({ ...prev, [name]: true }));
       const error = validateField(name, value);
-      setErrors(prev => ({ ...prev, [name]: error }));
+      setErrors((prev) => ({ ...prev, [name]: error }));
     } else {
       // Clear any existing errors for empty fields on blur
-      setErrors(prev => ({ ...prev, [name]: '' }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
   const validateForm = () => {
     const newErrors = {};
-    Object.keys(formData).forEach(key => {
+    Object.keys(formData).forEach((key) => {
       const error = validateField(key, formData[key], true); // Pass true for submit validation
       if (error) newErrors[key] = error;
     });
@@ -233,30 +269,35 @@ const BusinessProposalForm = () => {
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
     const formErrors = validateForm();
-    
+
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
-      setTouched(Object.keys(formData).reduce((acc, key) => ({ ...acc, [key]: true }), {}));
+      setTouched(
+        Object.keys(formData).reduce(
+          (acc, key) => ({ ...acc, [key]: true }),
+          {}
+        )
+      );
       return;
     }
 
     setIsSubmitting(true);
-    
+
     // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false);
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 3000);
-      
+
       // Reset form after successful submission
       setFormData({
-        businessName: '',
-        contactPerson: '',
-        email: '',
-        phone: '',
-        businessType: '',
-        monthlyVolume: '',
-        additionalRequirements: ''
+        businessName: "",
+        contactPerson: "",
+        email: "",
+        phone: "",
+        businessType: "",
+        monthlyVolume: "",
+        additionalRequirements: "",
       });
       setTouched({});
       setErrors({});
@@ -264,8 +305,9 @@ const BusinessProposalForm = () => {
   };
 
   const getFieldClasses = (fieldName) => {
-    const baseClasses = "w-full px-4 py-3 bg-white/5 backdrop-blur-sm border-2 rounded-xl transition-all duration-300 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-0";
-    
+    const baseClasses =
+      "w-full px-4 py-3 bg-white/5 backdrop-blur-sm border-2 rounded-xl transition-all duration-300 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-0";
+
     if (errors[fieldName] && touched[fieldName]) {
       return `${baseClasses} border-red-400 focus:border-red-500 shadow-lg shadow-red-500/20 animate-shake`;
     } else {
@@ -280,14 +322,19 @@ const BusinessProposalForm = () => {
         <div className="text-center mb-8 relative">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 blur-3xl rounded-full animate-pulse"></div>
           <div className="relative">
-            <div className="flex items-center justify-center mb-4">
-              <Sparkles className="text-blue-600 mr-2 animate-float" size={32} />
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-800 to-indigo-800 bg-clip-text text-transparent">
+            <div className="relative inline-block">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 bg-clip-text text-transparent mb-4 leading-tight tracking-tight">
                 Request a Laundry Service Proposal
               </h1>
+              {/* Animated underline */}
+              <div
+                className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 rounded-full transition-all duration-1000 delay-500"
+                style={{ width: "50%" }}
+              />
             </div>
-            <p className="text-gray-600 text-lg">
-              Get a customized laundry solution and pricing for your business needs.
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed font-medium mt-6">
+              Get a customized laundry solution and pricing for your business
+              needs.
             </p>
           </div>
         </div>
@@ -314,11 +361,11 @@ const BusinessProposalForm = () => {
                 value={formData.businessName}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
-                onKeyPress={(e) => handleKeyPress(e, 'businessName')}
-                onPaste={(e) => handlePaste(e, 'businessName')}
+                onKeyPress={(e) => handleKeyPress(e, "businessName")}
+                onPaste={(e) => handlePaste(e, "businessName")}
                 placeholder="Your Business Name"
                 maxLength={100}
-                className={getFieldClasses('businessName')}
+                className={getFieldClasses("businessName")}
               />
               {errors.businessName && touched.businessName && (
                 <div className="flex items-center mt-2 text-red-500 text-sm animate-fade-in">
@@ -339,11 +386,11 @@ const BusinessProposalForm = () => {
                 value={formData.contactPerson}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
-                onKeyPress={(e) => handleKeyPress(e, 'contactPerson')}
-                onPaste={(e) => handlePaste(e, 'contactPerson')}
+                onKeyPress={(e) => handleKeyPress(e, "contactPerson")}
+                onPaste={(e) => handlePaste(e, "contactPerson")}
                 placeholder="Your Name"
                 maxLength={50}
-                className={getFieldClasses('contactPerson')}
+                className={getFieldClasses("contactPerson")}
               />
               {errors.contactPerson && touched.contactPerson && (
                 <div className="flex items-center mt-2 text-red-500 text-sm animate-fade-in">
@@ -364,11 +411,11 @@ const BusinessProposalForm = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
-                onKeyPress={(e) => handleKeyPress(e, 'email')}
-                onPaste={(e) => handlePaste(e, 'email')}
+                onKeyPress={(e) => handleKeyPress(e, "email")}
+                onPaste={(e) => handlePaste(e, "email")}
                 placeholder="your@email.com"
                 maxLength={254}
-                className={getFieldClasses('email')}
+                className={getFieldClasses("email")}
               />
               {errors.email && touched.email && (
                 <div className="flex items-center mt-2 text-red-500 text-sm animate-fade-in">
@@ -389,11 +436,11 @@ const BusinessProposalForm = () => {
                 value={formData.phone}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
-                onKeyPress={(e) => handleKeyPress(e, 'phone')}
-                onPaste={(e) => handlePaste(e, 'phone')}
+                onKeyPress={(e) => handleKeyPress(e, "phone")}
+                onPaste={(e) => handlePaste(e, "phone")}
                 placeholder="+965 XXXX XXXX"
                 maxLength={20}
-                className={getFieldClasses('phone')}
+                className={getFieldClasses("phone")}
               />
               {errors.phone && touched.phone && (
                 <div className="flex items-center mt-2 text-red-500 text-sm animate-fade-in">
@@ -413,10 +460,10 @@ const BusinessProposalForm = () => {
                 value={formData.businessType}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
-                className={getFieldClasses('businessType')}
+                className={getFieldClasses("businessType")}
               >
                 {businessTypes.map((type, index) => (
-                  <option key={index} value={index === 0 ? '' : type}>
+                  <option key={index} value={index === 0 ? "" : type}>
                     {type}
                   </option>
                 ))}
@@ -432,17 +479,18 @@ const BusinessProposalForm = () => {
             {/* Monthly Laundry Volume */}
             <div className="relative">
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Monthly Laundry Volume (kg) <span className="text-red-500">*</span>
+                Monthly Laundry Volume (kg){" "}
+                <span className="text-red-500">*</span>
               </label>
               <select
                 name="monthlyVolume"
                 value={formData.monthlyVolume}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
-                className={getFieldClasses('monthlyVolume')}
+                className={getFieldClasses("monthlyVolume")}
               >
                 {volumeOptions.map((volume, index) => (
-                  <option key={index} value={index === 0 ? '' : volume}>
+                  <option key={index} value={index === 0 ? "" : volume}>
                     {volume}
                   </option>
                 ))}
@@ -498,10 +546,13 @@ const BusinessProposalForm = () => {
               ) : (
                 <div className="flex items-center">
                   Request Laundry Proposal
-                  <Send className="ml-2 transition-transform duration-300 group-hover:translate-x-1" size={20} />
+                  <Send
+                    className="ml-2 transition-transform duration-300 group-hover:translate-x-1"
+                    size={20}
+                  />
                 </div>
               )}
-              
+
               {/* Animated background effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-yellow-300 to-yellow-400 rounded-2xl opacity-0 hover:opacity-100 transition-opacity duration-300 -z-10 blur-xl"></div>
             </button>
@@ -511,25 +562,55 @@ const BusinessProposalForm = () => {
 
       <style jsx>{`
         @keyframes slide-in {
-          from { transform: translateX(100%); opacity: 0; }
-          to { transform: translateX(0); opacity: 1; }
+          from {
+            transform: translateX(100%);
+            opacity: 0;
+          }
+          to {
+            transform: translateX(0);
+            opacity: 1;
+          }
         }
         @keyframes fade-in {
-          from { opacity: 0; transform: translateY(-10px); }
-          to { opacity: 1; transform: translateY(0); }
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
         @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          25% { transform: translateX(-5px); }
-          75% { transform: translateX(5px); }
+          0%,
+          100% {
+            transform: translateX(0);
+          }
+          25% {
+            transform: translateX(-5px);
+          }
+          75% {
+            transform: translateX(5px);
+          }
         }
         @keyframes pulse-glow {
-          0%, 100% { box-shadow: 0 0 20px rgba(255, 235, 59, 0.3); }
-          50% { box-shadow: 0 0 30px rgba(255, 235, 59, 0.5), 0 0 40px rgba(255, 235, 59, 0.2); }
+          0%,
+          100% {
+            box-shadow: 0 0 20px rgba(255, 235, 59, 0.3);
+          }
+          50% {
+            box-shadow: 0 0 30px rgba(255, 235, 59, 0.5),
+              0 0 40px rgba(255, 235, 59, 0.2);
+          }
         }
         @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
+          0%,
+          100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
         }
         .animate-slide-in {
           animation: slide-in 0.3s ease-out;

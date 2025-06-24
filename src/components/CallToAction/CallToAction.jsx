@@ -82,31 +82,4 @@ export default CallToAction;
     Icon: Phone
   }}
 /> */}
-{/* <CallToAction
-  headline="Ready to Simplify Your Laundry Routine?"
-  description="Join FarrariGo today and experience the convenience of premium laundry service."
-  primaryButton={{
-    text: "Start Your Subscription",
-    link: "/subscribe",
-    Icon: ArrowRight
-  }}
-  secondaryButton={{
-    text: "Learn More",
-    link: "/learn-more"
-  }}
-/> */}
-{/* <CallToAction
-  headline="Download Our Complete Care Guide"
-  description="Get our comprehensive fabric care booklet with detailed instructions, stain removal tips, and professional recommendations."
-  stats={[
-    { value: '50+', label: 'Fabric Types Covered' },
-    { value: '100+', label: 'Care Instructions' },
-    { value: '25+', label: 'Stain Solutions' }
-  ]}
-  primaryButton={{
-    text: "Download Care Guide (PDF)",
-    link: "/download-guide",
-    Icon: Download
-  }}
-  footerText="Free download • 2.5MB • Available in English and Arabic"
-/> */}
+

@@ -8,14 +8,19 @@ import BusinessProposalForm from './components/BusinessProposal/proposal';
 import FindOurLocation from './components/LocateUs/location';
 import PickupScheduleForm from './components/SubscribeNow/Subscribe';
 import OurServices from './pages/OurSevices/OurServices';
+import Fabrics from './pages/Fabrics/Fabrics';
+import OurProcess from './pages/OurProcess/OurProcess';
 const App = () => {
-  
-
   return (
     <div>
       {/* <PickupScheduleForm/> */}
       {/* <Home/> */}
-      <OurServices/>
+      {/* <OurServices/> */}
+      {/* <BusinessProposalForm/> */}
+      {/* <FindOurLocation/> */}
+      {/* <Fabrics/> */}
+      <OurProcess/>
+
     </div>
   )
 }
