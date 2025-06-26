@@ -1,7 +1,5 @@
 import React from "react";
 import Feature from "../../components/Feature/Feature";
-import Navbar from "../../components/Navbar/Navbar";
-import Footer from "../../components/Footer/Footer";
 import CallToAction from "../../components/CallToAction/CallToAction";
 import TestimonialsSection from "../../components/TestimonialSection/TestimonialsSection";
 import {
@@ -87,7 +85,6 @@ const Home = () => {
   
   return (
     <div>
-      <Navbar />
       <Feature
         layout="hero"
         title="Luxury Laundry. Effortlessly Delivered."
@@ -167,14 +164,13 @@ const Home = () => {
         description="Join thousands of satisfied customers who have made the switch to convenient, luxury laundry service."
         primaryButton={{
           text: "Start Your Subscription",
-          link: "/subscribe",
+          link: "/subscription",
         }}
         secondaryButton={{
           text: "Contact Us",
           link: "/contact",
         }}
       />
-      <Footer />
     </div>
   );
 };

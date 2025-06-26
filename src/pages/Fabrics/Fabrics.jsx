@@ -1,7 +1,5 @@
 import React from "react";
 import FeatureForAll from "../../components/FeatureForAll/FeatureForAll";
-import Navbar from "../../components/Navbar/Navbar";
-import Footer from "../../components/Footer/Footer";
 import CardsSection from "../../components/CardsSection/CardsSection";
 import CallToAction from "../../components/CallToAction/CallToAction";
 import {
@@ -173,7 +171,6 @@ const Fabrics = () => {
   ];
   return (
     <div>
-      <Navbar />
       <FeatureForAll
         title="Fabric & Garment Care Guide"
         subtitle="Discover how our expert team provides specialized care for every type of fabric, ensuring your garments receive the perfect treatment they deserve."
@@ -244,7 +241,6 @@ const Fabrics = () => {
         }}
         footerText="Free download • 2.5MB • Available in English and Arabic"
       />
-      <Footer />
     </div>
   );
 };

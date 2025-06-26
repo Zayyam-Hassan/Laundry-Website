@@ -1,6 +1,4 @@
 import React from "react";
-import Navbar from "../../components/Navbar/Navbar";
-import Footer from "../../components/Footer/Footer";
 import FeatureForAll from "../../components/FeatureForAll/FeatureForAll";
 import CardsSection from "../../components/CardsSection/CardsSection";
 import Tracking from "../../components/RealTimeTracking/Tracking";
@@ -148,7 +146,6 @@ const OurProcess = () => {
   };
   return (
     <div>
-      <Navbar />
       <FeatureForAll
         title="Behind the Scenes: Our Process"
         subtitle="Discover the meticulous care and attention that goes into every step of our premium laundry service. From pickup to delivery, we ensure excellence at every stage."
@@ -210,7 +207,6 @@ const OurProcess = () => {
           link: "/learn-more",
         }}
       />
-      <Footer />
     </div>
   );
 };

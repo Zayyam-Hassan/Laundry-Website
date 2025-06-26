@@ -1,6 +1,5 @@
 import React from "react";
-import Navbar from "../../components/Navbar/Navbar";
-import Footer from "../../components/Footer/Footer";
+
 import FeatureForAll from "../../components/FeatureForAll/FeatureForAll";
 import GetInTouchForm from "../../components/ContactUs/contactUs";
 import FAQ from "../../components/FrequentlyAskedQuestions/FAQ";
@@ -8,7 +7,6 @@ import {Clock,Users,MessageCircle} from "lucide-react"
 const Contact = () => {
   return (
     <div>
-      <Navbar />
       <FeatureForAll
         title="Contact Us"
         subtitle="We're here to help with any questions about our premium laundry services. Get in touch with our friendly team."
@@ -41,7 +39,6 @@ const Contact = () => {
       />
       <GetInTouchForm/>
       <FAQ/>
-      <Footer />
     </div>
   );
 };

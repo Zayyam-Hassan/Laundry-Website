@@ -1,6 +1,4 @@
 import React from 'react'
-import Navbar from '../../components/Navbar/Navbar'
-import Footer from '../../components/Footer/Footer'
 import CallToAction from '../../components/CallToAction/CallToAction'
 import FeatureForAll from '../../components/FeatureForAll/FeatureForAll'
 import BusinessProposalForm from '../../components/BusinessProposal/proposal'
@@ -99,7 +97,6 @@ const Business = () => {
 };
   return (
     <div>
-      <Navbar/>
               <FeatureForAll
   title="Laundry Solutions for Businesses"
   subtitle="Partner with FarrariGo to provide premium laundry services for your business. Professional solutions for hotels, salons, gyms, clinics, and offices."
@@ -147,7 +144,6 @@ const Business = () => {
         Icon: Phone
       }}
     />
-<Footer/>
     </div>
   )
 }

@@ -35,8 +35,8 @@ const Footer = () => {
             <h3 className="text-sm font-semibold text-yellow-400 tracking-wider uppercase">Services</h3>
             <ul className="mt-4 space-y-3">
               <li><Link to="/services" className="relative text-base text-gray-300 hover:text-white transition-colors duration-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-px after:bg-yellow-400 after:transition-all after:duration-300 hover:after:w-full">Our Services</Link></li>
-              <li><Link to="/fabric-care-guide" className="relative text-base text-gray-300 hover:text-white transition-colors duration-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-px after:bg-yellow-400 after:transition-all after:duration-300 hover:after:w-full">Fabric Care Guide</Link></li>
-              <li><Link to="/our-process" className="relative text-base text-gray-300 hover:text-white transition-colors duration-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-px after:bg-yellow-400 after:transition-all after:duration-300 hover:after:w-full">Our Process</Link></li>
+              <li><Link to="/fabrics" className="relative text-base text-gray-300 hover:text-white transition-colors duration-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-px after:bg-yellow-400 after:transition-all after:duration-300 hover:after:w-full">Fabric Care Guide</Link></li>
+              <li><Link to="/process" className="relative text-base text-gray-300 hover:text-white transition-colors duration-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-px after:bg-yellow-400 after:transition-all after:duration-300 hover:after:w-full">Our Process</Link></li>
               <li><Link to="/business" className="relative text-base text-gray-300 hover:text-white transition-colors duration-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-px after:bg-yellow-400 after:transition-all after:duration-300 hover:after:w-full">Business Solutions</Link></li>
             </ul>
           </div>
@@ -45,10 +45,10 @@ const Footer = () => {
           <div>
             <h3 className="text-sm font-semibold text-yellow-400 tracking-wider uppercase">Company</h3>
             <ul className="mt-4 space-y-3">
-              <li><Link to="/blog" className="relative text-base text-gray-300 hover:text-white transition-colors duration-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-px after:bg-yellow-400 after:transition-all after:duration-300 hover:after:w-full">Blog</Link></li>
-              <li><Link to="/gift-cards" className="relative text-base text-gray-300 hover:text-white transition-colors duration-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-px after:bg-yellow-400 after:transition-all after:duration-300 hover:after:w-full">Gift Cards</Link></li>
+              <li><Link to="/" className="relative text-base text-gray-300 hover:text-white transition-colors duration-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-px after:bg-yellow-400 after:transition-all after:duration-300 hover:after:w-full">Blog (Upcoming)</Link></li>
+              <li><Link to="/giftcards" className="relative text-base text-gray-300 hover:text-white transition-colors duration-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-px after:bg-yellow-400 after:transition-all after:duration-300 hover:after:w-full">Gift Cards</Link></li>
               <li><Link to="/contact" className="relative text-base text-gray-300 hover:text-white transition-colors duration-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-px after:bg-yellow-400 after:transition-all after:duration-300 hover:after:w-full">Contact Us</Link></li>
-              <li><Link to="/careers" className="relative text-base text-gray-300 hover:text-white transition-colors duration-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-px after:bg-yellow-400 after:transition-all after:duration-300 hover:after:w-full">Careers</Link></li>
+              <li><Link to="/" className="relative text-base text-gray-300 hover:text-white transition-colors duration-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-px after:bg-yellow-400 after:transition-all after:duration-300 hover:after:w-full">Careers (Upcoming)</Link></li>
             </ul>
           </div>
 

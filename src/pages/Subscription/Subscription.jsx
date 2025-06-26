@@ -1,6 +1,4 @@
 import React from "react";
-import Navbar from "../../components/Navbar/Navbar";
-import Footer from "../../components/Footer/Footer";
 import FeatureForAll from "../../components/FeatureForAll/FeatureForAll";
 import CardsSection from "../../components/CardsSection/CardsSection";
 import PickupScheduleForm from "../../components/SubscribeNow/Subscribe";
@@ -23,7 +21,6 @@ const Subscription = () => {
   ];
   return (
     <div>
-      <Navbar />
       <FeatureForAll
         title="Start Your Premium Laundry Experience"
         subtitle="Fill out the form below to schedule your first pickup and join thousands of satisfied customers who trust FarrariGo for their laundry needs."
@@ -57,7 +54,6 @@ const Subscription = () => {
       subtitle="Here's what you can expect after submitting your inquiry."
       steps={steps}
     />
-      <Footer />
     </div>
   );
 };

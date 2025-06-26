@@ -1,7 +1,5 @@
 import React from "react";
 import FeatureForAll from "../../components/FeatureForAll/FeatureForAll";
-import Navbar from "../../components/Navbar/Navbar";
-import Footer from "../../components/Footer/Footer";
 import CardsSection from "../../components/CardsSection/CardsSection";
 import ProcessSteps from "../../components/ProcessSteps/ProcessSteps";
 import PricingPlans from "../../components/PricingPlans/Pricing";
@@ -101,7 +99,6 @@ const OurServicesSteps =
 
   return (
     <div>
-      <Navbar />
       <FeatureForAll
         title="Our Premium Services"
         subtitle="Experience the convenience of subscription-based laundry service with premium quality and professional care for all your garments."
@@ -142,7 +139,6 @@ const OurServicesSteps =
         theme="ocean"
       />
       <PricingPlans/>
-      <Footer />
     </div>
   );
 };
