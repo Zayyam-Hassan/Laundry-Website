@@ -148,7 +148,7 @@ const PricingPlans = ({
       <div className="relative max-w-6xl mx-auto">
         {/* Header */}
         <div 
-          className={`text-center mb-16 transform transition-all duration-1000 ${
+          className={`text-center mb-16 mt-4 transform transition-all duration-1000 ${
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
           }`}
         >

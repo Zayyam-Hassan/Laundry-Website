@@ -13,6 +13,10 @@ import OurProcess from './pages/OurProcess/OurProcess';
 import GetInTouchForm from './components/ContactUs/contactUs';
 import ReferralComponent from './components/ReferralCodes/ReferralCode';
 import FAQ from './components/FrequentlyAskedQuestions/FAQ';
+import GarmentJourney from './components/GarmentsJourney/GarmentsJourney';
+import Business from './pages/Business/Business';
+import Subscription from './pages/Subscription/Subscription';
+import Contact from './pages/Contact/Contact';
 const App = () => {
   return (
     <div>
@@ -22,9 +26,13 @@ const App = () => {
       {/* <BusinessProposalForm/> */}
       {/* <FindOurLocation/> */}
       {/* <Fabrics/> */}
-      <GetInTouchForm/>
+      {/* <GetInTouchForm/>
       <ReferralComponent/>
-      <FAQ/>
+      <FAQ/> */}
+      {/* <OurProcess/> */}
+      {/* <Business/> */}
+      {/* <Subscription/> */}
+      <Contact/>
     </div>
   )
 }

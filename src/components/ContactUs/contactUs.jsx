@@ -277,7 +277,7 @@ const GetInTouchForm = () => {
 
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-12 relative">
+        <div className="text-center mb-12 relative mt-4">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-indigo-600/10 blur-3xl rounded-full animate-pulse"></div>
           <div className="relative">
             <div className="relative inline-block">

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Phone , Download} from 'lucide-react';
+import { ArrowRight, Phone, Download } from 'lucide-react';
 
 const CallToAction = ({
   headline,
@@ -12,21 +12,27 @@ const CallToAction = ({
 }) => {
   return (
     <div className="bg-gradient-to-tr from-gray-900 via-slate-900 to-teal-900">
-      <div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-3xl font-extrabold text-white sm:text-4xl font-serif">
+      <div className="max-w-6xl mx-auto py-16 px-4 sm:px-6 lg:px-8 text-center">
+        <h2 className="text-3xl font-extrabold text-white sm:text-4xl font-serif mt-4 leading-tight break-words hyphens-auto">
           {headline}
         </h2>
-        <p className="mt-4 max-w-3xl mx-auto text-base text-gray-300">
+        <p className="mt-6 max-w-3xl mx-auto text-base text-gray-300">
           {description}
         </p>
 
         {/* Stats Section */}
-        {stats && (
+        {stats && stats.length > 0 && (
           <div className="mt-10 max-w-2xl mx-auto">
             <div className="rounded-lg bg-teal-900/30 p-8">
-              <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
-                {stats.map((stat) => (
-                  <div key={stat.label} className="flex flex-col items-center">
+              <div className={`grid gap-8 ${
+                stats.length === 1 
+                  ? 'grid-cols-1 place-items-center' 
+                  : stats.length === 2 
+                  ? 'grid-cols-1 sm:grid-cols-2' 
+                  : 'grid-cols-1 sm:grid-cols-3'
+              }`}>
+                {stats.map((stat, index) => (
+                  <div key={stat.label || index} className="flex flex-col items-center">
                     <dt className="text-4xl font-bold text-yellow-400">{stat.value}</dt>
                     <dd className="mt-2 text-sm text-gray-300">{stat.label}</dd>
                   </div>
@@ -37,7 +43,7 @@ const CallToAction = ({
         )}
 
         {/* Buttons Section */}
-        <div className="mt-8 flex justify-center items-center flex-wrap gap-4">
+        <div className="mt-10 flex justify-center items-center flex-wrap gap-4">
           {primaryButton && (
             <Link
               to={primaryButton.link}
@@ -67,19 +73,4 @@ const CallToAction = ({
   );
 };
 
-export default CallToAction; 
-{/* <CallToAction
-  headline="Ready to Experience Premium Laundry Care?"
-  description="Join thousands of satisfied customers who have made the switch to convenient, luxury laundry service."
-  primaryButton={{
-    text: "Start Your Subscription",
-    link: "/subscribe",
-    Icon: ArrowRight
-  }}
-  secondaryButton={{
-    text: "Contact Us",
-    link: "/contact",
-    Icon: Phone
-  }}
-/> */}
-
+export default CallToAction;

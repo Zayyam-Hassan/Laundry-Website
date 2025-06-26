@@ -5,6 +5,7 @@ import FeatureForAll from "../../components/FeatureForAll/FeatureForAll";
 import CardsSection from "../../components/CardsSection/CardsSection";
 import Tracking from "../../components/RealTimeTracking/Tracking";
 import CallToAction from "../../components/CallToAction/CallToAction";
+import GarmentJourney from "../../components/GarmentsJourney/GarmentsJourney";
 import { ArrowRight, CheckCircle, Truck, Clock, Users, Shield, Zap, GraduationCap, Settings,Thermometer,Search,Droplets} from "lucide-react";
 const OurProcess = () => {
   const premiumFleetData = {
@@ -175,6 +176,7 @@ const OurProcess = () => {
           },
         ]}
       />
+      <GarmentJourney/>
       <CardsSection
         title={facilityData.title}
         subtitle={facilityData.subtitle}

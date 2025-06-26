@@ -148,14 +148,4 @@ const OurServicesSteps =
 };
 
 export default OurServices;
-  //  const Referrals=  {
-  //     title: "How Referrals Work",
-  //     subtitle: "Simple steps to earn rewards by sharing FarrariGo.",
-  //     steps: [
-  //       { title: "Share Your Code", description: "Send your unique referral code to friends and family." },
-  //       { title: "Friend Signs Up", description: "They create an account using your referral code." },
-  //       { title: "First Experience", description: "Your friend enjoys their premium laundry experience." },
-  //       { title: "Mutual Rewards", description: "Both accounts receive exclusive credits and bonus perks." }
-  //     ],
-  //     theme: 'ocean'
-  //   };
+  

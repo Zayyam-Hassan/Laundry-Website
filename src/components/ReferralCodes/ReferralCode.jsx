@@ -31,7 +31,7 @@ function ReferralComponent() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center p-4">
       <div className="w-full max-w-2xl">
         {/* Header */}
-        <div className="text-center mb-12 relative">
+        <div className="text-center mb-12 relative mt-4">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 blur-3xl rounded-full animate-pulse"></div>
           <div className="relative">
             <div className="relative inline-block">

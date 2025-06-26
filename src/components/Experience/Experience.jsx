@@ -102,7 +102,7 @@ const Experience = () => {
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header Section */}
         <div 
-          className={`text-center mb-16 transform transition-all duration-1200 ease-out ${
+          className={`text-center mb-16 mt-4 transform transition-all duration-1200 ease-out ${
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
           }`}
         >

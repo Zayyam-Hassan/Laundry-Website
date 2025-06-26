@@ -334,7 +334,7 @@ const PickupScheduleForm = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-100 p-4 flex items-center justify-center">
       <div className="w-full max-w-4xl">
         {/* Header */}
-        <div className="text-center mb-8 relative">
+        <div className="text-center mb-8 relative mt-4">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 blur-3xl rounded-full animate-pulse"></div>
           <div className="relative">
             <div className="relative inline-block">
