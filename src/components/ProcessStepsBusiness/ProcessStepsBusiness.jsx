@@ -5,6 +5,7 @@ import { CheckCircle, ArrowRight, Sparkles } from "lucide-react";
 const ProcessStepBusiness = ({
   title = "What Happens Next?",
   subtitle = "Here's what you can expect after submitting your inquiry.",
+  columns = 3,
   steps = [
     {
       title: "Initial Review",
@@ -20,6 +21,19 @@ const ProcessStepBusiness = ({
     }
   ],
 }) => {
+  // Determine grid classes based on columns prop
+  const getGridClasses = () => {
+    const columnMap = {
+      1: 'grid-cols-1',
+      2: 'grid-cols-1 sm:grid-cols-2',
+      3: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3', 
+      4: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
+      5: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5',
+      6: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6'
+    };
+    return columnMap[columns] || 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3';
+  };
+
   const [isVisible, setIsVisible] = useState(false);
   const [hoveredCard, setHoveredCard] = useState(null);
 
@@ -67,7 +81,7 @@ const ProcessStepBusiness = ({
           <div className="hidden md:block absolute top-20 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-indigo-200 to-transparent"></div>
           
           {/* Steps Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+          <div className={`grid ${getGridClasses()} gap-8 lg:gap-6`}>
             {steps.map((step, index) => (
               <div
                 key={index}
@@ -103,8 +117,8 @@ const ProcessStepBusiness = ({
                       hoveredCard === index ? 'scale-110 -rotate-3' : 'scale-100 rotate-0'
                     }`}>
                       <div className="relative">
-                        <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full blur-md opacity-50"></div>
-                        <div className="relative w-14 h-14 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 flex items-center justify-center text-white font-black text-xl shadow-lg">
+                        <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full blur-md opacity-50"></div>
+                        <div className="relative w-14 h-14 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 flex items-center justify-center text-white font-black text-xl shadow-lg">
                           {index + 1}
                         </div>
                       </div>
@@ -128,8 +142,6 @@ const ProcessStepBusiness = ({
                       <p className="text-gray-600 leading-relaxed">
                         {step.description}
                       </p>
-
-
                     </div>
 
                     {/* Decorative elements */}
@@ -145,7 +157,7 @@ const ProcessStepBusiness = ({
 
                 {/* Connection arrow for larger screens */}
                 {index < steps.length - 1 && (
-                  <div className="hidden md:block absolute -right-6 top-20 z-10">
+                  <div className="hidden lg:block absolute -right-3 top-20 z-10">
                     <div className={`w-12 h-12 rounded-full bg-white shadow-lg border-2 border-indigo-200 flex items-center justify-center transition-all duration-500 ${
                       hoveredCard === index || hoveredCard === index + 1
                         ? 'scale-110 border-indigo-400 bg-indigo-50'
@@ -159,8 +171,6 @@ const ProcessStepBusiness = ({
             ))}
           </div>
         </div>
-
-
       </div>
     </div>
   );

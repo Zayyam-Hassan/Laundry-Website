@@ -9,7 +9,7 @@ import OurProcess from './pages/OurProcess/OurProcess';
 import Business from './pages/Business/Business';
 import Subscription from './pages/Subscription/Subscription';
 import Contact from './pages/Contact/Contact';
-
+import GiftCard from './pages/GiftCard/GiftCard';
 const App = () => {
   return (
     <div>
@@ -25,7 +25,7 @@ const App = () => {
         <Route path="/business" element={<Business />} />
         <Route path="/subscription" element={<Subscription />} />
         <Route path="/contact" element={<Contact />} />
-        
+        <Route path='/giftcards' element={<GiftCard/>}/>
         {/* Legal Pages */}
         {/* <Route path="/privacy-policy" element={<PrivacyPolicy />} /> */}
         
