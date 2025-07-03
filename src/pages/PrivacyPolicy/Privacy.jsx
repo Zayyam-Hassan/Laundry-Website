@@ -1,8 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ChevronDown, ChevronRight, Shield, Eye, Lock, Share2, Database, UserCheck, Mail, Phone } from 'lucide-react';
 
 const PrivacyPolicy = () => {
   const [activeSection, setActiveSection] = useState(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const [showSubtitle, setShowSubtitle] = useState(false);
+  const [showUnderline, setShowUnderline] = useState(false);
+  const [showSections, setShowSections] = useState(false);
+  const [showLoadingDots, setShowLoadingDots] = useState(false);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    document.title = "Privacy Policy - FarrariGo";
+    const observer = new window.IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated) {
+          setHasAnimated(true);
+          setIsVisible(true);
+          setTimeout(() => setShowSubtitle(true), 300);
+          setTimeout(() => setShowUnderline(true), 600);
+          setTimeout(() => setShowSections(true), 900);
+          setTimeout(() => setShowLoadingDots(true), 1200);
+        }
+      },
+      { threshold: 0.2, rootMargin: '0px 0px -100px 0px' }
+    );
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+    return () => observer.disconnect();
+  }, [hasAnimated]);
 
   const toggleSection = (section) => {
     setActiveSection(activeSection === section ? null : section);
@@ -163,11 +191,11 @@ const PrivacyPolicy = () => {
               </div>
             ))}
           </div>
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 rounded-xl mt-6">
-            <h4 className="font-semibold mb-2">Exercise Your Rights</h4>
+          <div className="bg-[#170d5c] text-white p-6 rounded-xl mt-6">
+            <h4 className="font-semibold mb-2 text-[#d9b451]">Exercise Your Rights</h4>
             <p className="mb-4">To exercise these rights, contact us at:</p>
-            <div className="bg-white/20 p-3 rounded-lg">
-              <strong>Info@farrarigo.com</strong>
+            <div className="bg-gradient-to-r from-slate-800 to-slate-700 p-3 rounded-lg border border-slate-600">
+              <strong className="text-white">Info@farrarigo.com</strong>
             </div>
           </div>
         </div>
@@ -176,176 +204,267 @@ const PrivacyPolicy = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-900 ">
+    <div ref={sectionRef} className="min-h-screen bg-gradient-to-br from-[#170d5c] via-white to-[#d9b451]/10 relative overflow-hidden">
+      {/* Animated Background Blobs */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <div className="absolute top-20 left-20 w-72 h-72 rounded-full blur-3xl animate-pulse" style={{ backgroundColor: 'rgba(23, 13, 92, 0.10)' }}></div>
+        <div className="absolute bottom-20 right-20 w-96 h-96 rounded-full blur-3xl animate-pulse" style={{ backgroundColor: 'rgba(217, 180, 81, 0.10)', animationDelay: '1s' }}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full blur-3xl animate-pulse" style={{ backgroundColor: 'rgba(23, 13, 92, 0.10)', animationDelay: '2s' }}></div>
+        {/* Floating particles */}
+        <div className="absolute inset-0 overflow-hidden">
+          {[...Array(12)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-2 h-2 rounded-full animate-pulse"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 2}s`,
+                animationDuration: `${3 + Math.random() * 2}s`,
+                backgroundColor: i % 2 === 0 ? 'rgba(23, 13, 92, 0.3)' : 'rgba(217, 180, 81, 0.3)'
+              }}
+            />
+          ))}
+        </div>
+      </div>
       {/* Header */}
-      <div className="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 text-white">
+      <div className="relative z-10">
         <div className="max-w-4xl mx-auto px-6 py-16">
           <div className="text-center">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-white/10 rounded-full mb-6 backdrop-blur-sm">
-              <Shield className="w-8 h-8 text-blue-400" />
+              <Shield className="w-8 h-8 text-[#170d5c]" />
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight tracking-tight min-h-[4rem] flex items-center justify-center animate-fadein" style={{ color: '#170d5c', letterSpacing: '0.04em' }}>
               Privacy Notice
             </h1>
-            <p className="text-xl text-slate-300 max-w-2xl mx-auto">
-              Your privacy matters to us. Learn how we collect, use, and protect your personal information.
-            </p>
+            {showUnderline && (
+              <div
+                className="mx-auto h-1 rounded-full transition-all duration-1000 delay-500 animate-expand"
+                style={{ width: '60%', background: 'linear-gradient(to right, #170d5c, #d9b451)' }}
+              />
+            )}
+            {showSubtitle && (
+              <p className="text-xl text-gray-700 max-w-2xl mx-auto animate-fadein-delay">
+                Your privacy matters to us. Learn how we collect, use, and protect your personal information.
+              </p>
+            )}
             <div className="mt-8 inline-flex items-center bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 border border-white/20">
               <div className="w-2 h-2 bg-green-400 rounded-full mr-3 animate-pulse"></div>
-              <span className="text-sm font-medium text-slate-200">Last updated: January 2025</span>
+              <span className="text-sm font-medium text-[#170d5c]">Last updated: January 2025</span>
             </div>
           </div>
         </div>
       </div>
-
       {/* Content */}
-      <div className="max-w-4xl mx-auto px-6 py-16">
+      <div className="max-w-4xl mx-auto px-6 py-16 relative z-10">
         {/* Introduction */}
-        <div className="bg-slate-800 rounded-2xl shadow-2xl border border-slate-700 p-8 mb-8">
-          <h2 className="text-2xl font-bold text-white mb-4">Our Commitment to Your Privacy</h2>
-          <div className="prose prose-slate max-w-none">
-            <p className="text-slate-300 leading-relaxed">
+        <div className={`bg-[#170d5c] rounded-2xl shadow-2xl border-2 border-[#170d5c]/20 p-8 mb-8 animate-fadein-delay`} style={{ opacity: isVisible ? 1 : 0, transform: isVisible ? 'translateY(0)' : 'translateY(30px)', transition: 'all 0.7s cubic-bezier(.23,1.02,.57,1.01)' }}>
+          <h2 className="text-2xl font-bold mb-4" style={{ color: '#d9b451' }}>Our Commitment to Your Privacy</h2>
+          <div className="prose max-w-none">
+            <p className="text-white leading-relaxed">
               Farrari Laundries respects your privacy and is committed to protecting your personal data. 
               This privacy notice outlines how we handle your personal information, your rights, and how 
               the law protects you when you use our services through:
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-              <div className="bg-gradient-to-r from-blue-900/50 to-indigo-900/50 p-4 rounded-xl border border-blue-700">
+              <div className="bg-gradient-to-r from-slate-800 to-slate-700 p-4 rounded-xl border border-slate-600">
                 <div className="font-semibold text-white">🌐 Website</div>
-                <div className="text-slate-300 text-sm">Farrarigo.com</div>
+                <div className="text-slate-200 text-sm">Farrarigo.com</div>
               </div>
-              <div className="bg-gradient-to-r from-emerald-900/50 to-green-900/50 p-4 rounded-xl border border-emerald-700">
+              <div className="bg-gradient-to-r from-slate-800 to-slate-700 p-4 rounded-xl border border-slate-600">
                 <div className="font-semibold text-white">📱 Mobile Apps</div>
-                <div className="text-slate-300 text-sm">iOS & Android apps</div>
+                <div className="text-slate-200 text-sm">iOS & Android apps</div>
               </div>
-              <div className="bg-gradient-to-r from-purple-900/50 to-pink-900/50 p-4 rounded-xl border border-purple-700">
+              <div className="bg-gradient-to-r from-slate-800 to-slate-700 p-4 rounded-xl border border-slate-600">
                 <div className="font-semibold text-white">💻 Platform</div>
-                <div className="text-slate-300 text-sm">Web & mobile platform</div>
+                <div className="text-slate-200 text-sm">Web & mobile platform</div>
               </div>
-              <div className="bg-gradient-to-r from-orange-900/50 to-yellow-900/50 p-4 rounded-xl border border-orange-700">
+              <div className="bg-gradient-to-r from-slate-800 to-slate-700 p-4 rounded-xl border border-slate-600">
                 <div className="font-semibold text-white">🧺 Services</div>
-                <div className="text-slate-300 text-sm">Laundry & dry cleaning</div>
+                <div className="text-slate-200 text-sm">Laundry & dry cleaning</div>
               </div>
             </div>
           </div>
         </div>
-
         {/* Expandable Sections */}
         <div className="space-y-4">
-          {sections.map((section) => (
-            <div key={section.id} className="bg-slate-800 rounded-2xl shadow-2xl border border-slate-700 overflow-hidden hover:shadow-3xl hover:border-slate-600 transition-all">
+          {sections.map((section, idx) => (
+            <div key={section.id} className={`bg-[#170d5c] rounded-2xl shadow-2xl border-2 border-[#d9b451]/20 overflow-hidden hover:shadow-3xl hover:border-[#d9b451]/40 transition-all animate-fadein-delay`} style={{ opacity: showSections ? 1 : 0, transform: showSections ? 'translateY(0)' : 'translateY(30px)', transitionDelay: `${idx * 100}ms`, transition: 'all 0.7s cubic-bezier(.23,1.02,.57,1.01)' }}>
               <button
                 onClick={() => toggleSection(section.id)}
-                className="w-full px-8 py-6 text-left hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset"
+                className="w-full px-8 py-6 text-left hover:bg-[#d9b451]/10 transition-colors focus:outline-none focus:ring-2 focus:ring-[#d9b451] focus:ring-inset"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
-                    <div className="flex items-center justify-center w-10 h-10 bg-blue-900/50 rounded-full mr-4 border border-blue-700">
-                      <div className="text-blue-400">
+                    <div className="flex items-center justify-center w-10 h-10 bg-[#d9b451]/10 rounded-full mr-4 border border-[#d9b451]/30">
+                      <div className="text-[#d9b451]">
                         {section.icon}
                       </div>
                     </div>
-                    <h3 className="text-xl font-semibold text-white">{section.title}</h3>
+                    <h3 className="text-xl font-semibold" style={{ color: '#d9b451' }}>{section.title}</h3>
                   </div>
                   <div className="flex-shrink-0">
                     {activeSection === section.id ? (
-                      <ChevronDown className="w-5 h-5 text-slate-400" />
+                      <ChevronDown className="w-5 h-5 text-white" />
                     ) : (
-                      <ChevronRight className="w-5 h-5 text-slate-400" />
+                      <ChevronRight className="w-5 h-5 text-white" />
                     )}
                   </div>
                 </div>
               </button>
-              
-              {activeSection === section.id && (
-                <div className="px-8 pb-8 border-t border-slate-700 bg-slate-800/50">
-                  <div className="pt-6">
-                    {section.content}
-                  </div>
-                </div>
-              )}
+              <DropdownContent isOpen={activeSection === section.id} className="dropdown-content px-8 border-t border-[#d9b451]/30 bg-[#170d5c]/90 animate-fadein-delay">
+                <div className="text-white">{section.content}</div>
+              </DropdownContent>
             </div>
           ))}
         </div>
-
         {/* Additional Sections */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
           {/* Marketing */}
-          <div className="bg-slate-800 rounded-2xl shadow-2xl border border-slate-700 p-6">
-            <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
-              <Mail className="w-5 h-5 mr-2 text-blue-400" />
+          <div className="bg-[#170d5c] rounded-2xl shadow-2xl border-2 border-[#d9b451]/20 p-6 animate-fadein-delay" style={{ opacity: showSections ? 1 : 0, transform: showSections ? 'translateY(0)' : 'translateY(30px)', transition: 'all 0.7s cubic-bezier(.23,1.02,.57,1.01)' }}>
+            <h3 className="text-lg font-semibold mb-4 flex items-center" style={{ color: '#d9b451' }}>
+              <Mail className="w-5 h-5 mr-2 text-white" />
               Marketing Communications
             </h3>
-            <p className="text-slate-300 text-sm mb-4">
+            <p className="text-white text-sm mb-4">
               You may receive marketing communications from us if you have used our services and have not opted out.
             </p>
-            <div className="bg-blue-900/30 p-4 rounded-lg border border-blue-700">
-              <p className="text-blue-300 text-sm font-medium">
+            <div className="bg-gradient-to-r from-slate-800 to-slate-700 p-4 rounded-lg border border-slate-600">
+              <p className="text-slate-200 text-sm font-medium">
                 You can withdraw consent or opt out at any time via email or unsubscribe links.
               </p>
             </div>
           </div>
-
           {/* Security */}
-          <div className="bg-slate-800 rounded-2xl shadow-2xl border border-slate-700 p-6">
-            <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
-              <Lock className="w-5 h-5 mr-2 text-emerald-400" />
+          <div className="bg-[#170d5c] rounded-2xl shadow-2xl border-2 border-[#d9b451]/20 p-6 animate-fadein-delay" style={{ opacity: showSections ? 1 : 0, transform: showSections ? 'translateY(0)' : 'translateY(30px)', transition: 'all 0.7s cubic-bezier(.23,1.02,.57,1.01)' }}>
+            <h3 className="text-lg font-semibold mb-4 flex items-center" style={{ color: '#d9b451' }}>
+              <Lock className="w-5 h-5 mr-2 text-white" />
               Data Security
             </h3>
-            <p className="text-slate-300 text-sm mb-4">
+            <p className="text-white text-sm mb-4">
               Your data is stored securely on our systems or our trusted partners' systems with appropriate protection measures.
             </p>
-            <div className="bg-emerald-900/30 p-4 rounded-lg border border-emerald-700">
-              <p className="text-emerald-300 text-sm font-medium">
+            <div className="bg-gradient-to-r from-slate-800 to-slate-700 p-4 rounded-lg border border-slate-600">
+              <p className="text-slate-200 text-sm font-medium">
                 Keep your access credentials confidential for maximum security.
               </p>
             </div>
           </div>
         </div>
-
         {/* Contact Information */}
-        <div className="bg-gradient-to-r from-slate-800 to-slate-700 text-white rounded-2xl shadow-2xl p-8 mt-12 border border-slate-600">
+        <div className="bg-[#170d5c] text-white rounded-2xl shadow-2xl p-8 mt-12 border-2 border-[#d9b451]/30 animate-fadein-delay" style={{ opacity: showSections ? 1 : 0, transform: showSections ? 'translateY(0)' : 'translateY(30px)', transition: 'all 0.7s cubic-bezier(.23,1.02,.57,1.01)' }}>
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold mb-2">Need Help or Have Questions?</h2>
-            <p className="text-slate-300">We're here to help you understand your privacy rights</p>
+            <p className="text-white/80">We're here to help you understand your privacy rights</p>
           </div>
-          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="text-center">
               <div className="inline-flex items-center justify-center w-12 h-12 bg-white/10 rounded-full mb-4 border border-white/20">
-                <Mail className="w-6 h-6 text-blue-400" />
+                <Mail className="w-6 h-6 text-[#d9b451]" />
               </div>
               <h3 className="font-semibold mb-2">Email Us</h3>
-              <p className="text-slate-300">Info@farrarigo.com</p>
+              <p className="text-white/80">Info@farrarigo.com</p>
             </div>
-            
             <div className="text-center">
               <div className="inline-flex items-center justify-center w-12 h-12 bg-white/10 rounded-full mb-4 border border-white/20">
-                <Phone className="w-6 h-6 text-emerald-400" />
+                <Phone className="w-6 h-6 text-white" />
               </div>
               <h3 className="font-semibold mb-2">Call Us</h3>
-              <p className="text-slate-300">+965 97588886</p>
+              <p className="text-white/80">+965 97588886</p>
             </div>
-            
             <div className="text-center">
               <div className="inline-flex items-center justify-center w-12 h-12 bg-white/10 rounded-full mb-4 border border-white/20">
-                <Database className="w-6 h-6 text-purple-400" />
+                <Database className="w-6 h-6 text-white" />
               </div>
               <h3 className="font-semibold mb-2">Visit Us</h3>
-              <p className="text-slate-300">Shuwaikh, Kuwait</p>
+              <p className="text-white/80">Shuwaikh, Kuwait</p>
             </div>
           </div>
         </div>
-
         {/* Footer Note */}
-        <div className="text-center mt-12 p-6 bg-slate-800 rounded-xl border border-slate-700">
-          <p className="text-slate-300 text-sm">
-            <strong className="text-white">Policy Updates:</strong> We may update this policy occasionally. All changes will be posted on this page. 
+        <div className="text-center mt-12 p-6 bg-[#170d5c] rounded-xl border-2 border-[#d9b451]/20 animate-fadein-delay" style={{ opacity: showSections ? 1 : 0, transform: showSections ? 'translateY(0)' : 'translateY(30px)', transition: 'all 0.7s cubic-bezier(.23,1.02,.57,1.01)' }}>
+          <p className="text-white text-sm">
+            <strong className="text-[#d9b451]">Policy Updates:</strong> We may update this policy occasionally. All changes will be posted on this page. 
             Please check back regularly for updates.
           </p>
         </div>
+        {/* Animated loading dots at the bottom */}
+        <div className={`mt-20 flex justify-center transform transition-all duration-500 ${showLoadingDots ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+          <div className="flex space-x-2">
+            {[...Array(5)].map((_, i) => (
+              <div
+                key={i}
+                className="w-2 h-2 rounded-full animate-pulse"
+                style={{ 
+                  animationDelay: `${i * 100}ms`,
+                  background: i % 2 === 0 ? '#170d5c' : '#d9b451'
+                }}
+              ></div>
+            ))}
+          </div>
+        </div>
       </div>
+      {/* Animations and styles */}
+      <style jsx>{`
+        @keyframes fadein {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadein-delay {
+          from { opacity: 0; transform: translateY(40px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes expand {
+          from { width: 0; }
+          to { width: 60%; }
+        }
+        .animate-fadein {
+          animation: fadein 1s cubic-bezier(0.4,0,0.2,1) both;
+        }
+        .animate-fadein-delay {
+          animation: fadein-delay 1.2s cubic-bezier(0.4,0,0.2,1) both;
+        }
+        .animate-expand {
+          animation: expand 1s ease-out forwards;
+        }
+      `}</style>
     </div>
   );
 };
+
+function DropdownContent({ isOpen, children, className = '' }) {
+  const wrapperRef = useRef(null);
+  const contentRef = useRef(null);
+  const [maxHeight, setMaxHeight] = useState('0px');
+
+  useEffect(() => {
+    if (isOpen && contentRef.current) {
+      setMaxHeight((contentRef.current.scrollHeight + 100) + 'px');
+    } else {
+      setMaxHeight('0px');
+    }
+  }, [isOpen, children]);
+
+  return (
+    <div
+      className={className}
+      ref={wrapperRef}
+      style={{
+        maxHeight,
+        opacity: isOpen ? 1 : 0,
+        overflow: 'hidden',
+        transition: 'max-height 0.7s cubic-bezier(.23,1.02,.57,1.01), opacity 0.5s cubic-bezier(.23,1.02,.57,1.01), padding 0.5s',
+        paddingTop: isOpen ? '1.5rem' : '0',
+        paddingBottom: isOpen ? '2.5rem' : '0',
+        willChange: 'max-height, opacity',
+      }}
+      aria-hidden={isOpen ? 'false' : 'true'}
+    >
+      <div ref={contentRef}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
 export default PrivacyPolicy;

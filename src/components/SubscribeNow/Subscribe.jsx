@@ -1,7 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { AlertCircle, CheckCircle2, Calendar, Sparkles } from "lucide-react";
 
 const PickupScheduleForm = () => {
+  // Animation states
+  const [isVisible, setIsVisible] = useState(false);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const [displayedTitle, setDisplayedTitle] = useState('');
+  const [titleIndex, setTitleIndex] = useState(0);
+  const [showSubtitle, setShowSubtitle] = useState(false);
+  const [showUnderline, setShowUnderline] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const sectionRef = useRef(null);
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -330,26 +340,77 @@ const PickupScheduleForm = () => {
     return maxDate.toISOString().split("T")[0];
   };
 
+  // Intersection Observer to detect when user scrolls to this component
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated) {
+          setHasAnimated(true);
+          setIsVisible(true);
+          
+          // Start fade-in animations with delays
+          setTimeout(() => setShowSubtitle(true), 300);
+          setTimeout(() => setShowUnderline(true), 600);
+          setTimeout(() => setShowForm(true), 900);
+        }
+      },
+      { 
+        threshold: 0.2, // Trigger when 20% of component is visible
+        rootMargin: '0px 0px -100px 0px' // Trigger 100px before component enters viewport
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasAnimated]);
+
+  // Typewriter effect for title
+  useEffect(() => {
+    if (isVisible && titleIndex < "Schedule Your First Pickup".length) {
+      const timer = setTimeout(() => {
+        setDisplayedTitle("Schedule Your First Pickup".slice(0, titleIndex + 1));
+        setTitleIndex(titleIndex + 1);
+      }, 120);
+      return () => clearTimeout(timer);
+    }
+  }, [titleIndex, isVisible]);
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-100 p-4 flex items-center justify-center">
+    <div ref={sectionRef} className="min-h-screen p-4 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)' }}>
       <div className="w-full max-w-4xl">
         {/* Header */}
         <div className="text-center mb-8 relative mt-4">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 blur-3xl rounded-full animate-pulse"></div>
           <div className="relative">
             <div className="relative inline-block">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 bg-clip-text text-transparent mb-4 leading-tight tracking-tight">
-                Schedule Your First Pickup
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight tracking-tight min-h-[3rem] flex items-center justify-center" style={{ color: '#170d5c' }}>
+                {displayedTitle}
+                <span 
+                  className={`transition-all duration-300 ${isVisible && titleIndex < "Schedule Your First Pickup".length ? 'animate-pulse' : 'opacity-0'}`} 
+                  style={{ color: '#d9b451' }}
+                >
+                  |
+                </span>
               </h1>
-              {/* Animated underline */}
-              <div
-                className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 rounded-full transition-all duration-1000 delay-500"
-                style={{ width: "50%" }}
-              />
             </div>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed font-medium mt-6">
+            <p className={`text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed font-medium mt-6 transform transition-all duration-500`}
+               style={{ 
+                 opacity: showSubtitle ? 1 : 0,
+                 transform: showSubtitle ? 'translateY(0)' : 'translateY(20px)'
+               }}>
               Tell us about your laundry needs and we'll take care of the rest.
             </p>
+            {/* Colored bar - moved after subtitle */}
+            <div
+              className={`mt-6 w-24 h-1 mx-auto rounded-full transition-all duration-500`}
+              style={{ 
+                background: 'linear-gradient(to right, #170d5c, #d9b451)',
+                opacity: showUnderline ? 1 : 0,
+                transform: showUnderline ? 'scaleX(1)' : 'scaleX(0)'
+              }}
+            />
           </div>
         </div>
 
@@ -363,14 +424,16 @@ const PickupScheduleForm = () => {
         )}
 
         {/* Form */}
-        <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border border-white/20">
+        <div className={`bg-white/70 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border border-white/20 transition-all duration-1000 ease-out transform ${
+          showForm ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}>
           {/* Personal Information Section */}
           <div className="mb-8">
             <div className="flex items-center mb-6">
-              <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center text-white font-bold text-sm mr-3">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm mr-3" style={{ backgroundColor: '#d9b451' }}>
                 1
               </div>
-              <h2 className="text-xl font-bold text-gray-800">
+              <h2 className="text-xl font-bold" style={{ color: '#170d5c' }}>
                 Personal Information
               </h2>
             </div>
@@ -378,7 +441,7 @@ const PickupScheduleForm = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Full Name */}
               <div className="relative">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold mb-2" style={{ color: '#170d5c' }}>
                   Full Name <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -392,6 +455,10 @@ const PickupScheduleForm = () => {
                   placeholder="Your Full Name"
                   maxLength={50}
                   className={getFieldClasses("fullName")}
+                  style={{ 
+                    focusRingColor: '#d9b451',
+                    focusBorderColor: '#d9b451'
+                  }}
                 />
                 {errors.fullName && touched.fullName && (
                   <div className="flex items-center mt-2 text-red-500 text-sm animate-fade-in">
@@ -403,7 +470,7 @@ const PickupScheduleForm = () => {
 
               {/* Email Address */}
               <div className="relative">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold mb-2" style={{ color: '#170d5c' }}>
                   Email Address <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -417,6 +484,10 @@ const PickupScheduleForm = () => {
                   placeholder="your@email.com"
                   maxLength={254}
                   className={getFieldClasses("email")}
+                  style={{ 
+                    focusRingColor: '#d9b451',
+                    focusBorderColor: '#d9b451'
+                  }}
                 />
                 {errors.email && touched.email && (
                   <div className="flex items-center mt-2 text-red-500 text-sm animate-fade-in">
@@ -428,7 +499,7 @@ const PickupScheduleForm = () => {
 
               {/* Phone Number */}
               <div className="relative">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold mb-2" style={{ color: '#170d5c' }}>
                   Phone Number <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -442,6 +513,10 @@ const PickupScheduleForm = () => {
                   placeholder="+965 XXXX XXXX"
                   maxLength={20}
                   className={getFieldClasses("phoneNumber")}
+                  style={{ 
+                    focusRingColor: '#d9b451',
+                    focusBorderColor: '#d9b451'
+                  }}
                 />
                 {errors.phoneNumber && touched.phoneNumber && (
                   <div className="flex items-center mt-2 text-red-500 text-sm animate-fade-in">
@@ -453,7 +528,7 @@ const PickupScheduleForm = () => {
 
               {/* Pickup Address */}
               <div className="relative">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold mb-2" style={{ color: '#170d5c' }}>
                   Pickup Address <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -466,6 +541,10 @@ const PickupScheduleForm = () => {
                   placeholder="Your Full Address"
                   maxLength={200}
                   className={getFieldClasses("pickupAddress")}
+                  style={{ 
+                    focusRingColor: '#d9b451',
+                    focusBorderColor: '#d9b451'
+                  }}
                 />
                 {errors.pickupAddress && touched.pickupAddress && (
                   <div className="flex items-center mt-2 text-red-500 text-sm animate-fade-in">
@@ -480,10 +559,10 @@ const PickupScheduleForm = () => {
           {/* Service Preferences Section */}
           <div className="mb-8">
             <div className="flex items-center mb-6">
-              <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center text-white font-bold text-sm mr-3">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm mr-3" style={{ backgroundColor: '#d9b451' }}>
                 2
               </div>
-              <h2 className="text-xl font-bold text-gray-800">
+              <h2 className="text-xl font-bold" style={{ color: '#170d5c' }}>
                 Service Preferences
               </h2>
             </div>
@@ -491,7 +570,7 @@ const PickupScheduleForm = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Service Interested In */}
               <div className="relative">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold mb-2" style={{ color: '#170d5c' }}>
                   Service Interested In <span className="text-red-500">*</span>
                 </label>
                 <select
@@ -500,6 +579,10 @@ const PickupScheduleForm = () => {
                   onChange={handleInputChange}
                   onBlur={handleBlur}
                   className={getFieldClasses("serviceInterested")}
+                  style={{ 
+                    focusRingColor: '#d9b451',
+                    focusBorderColor: '#d9b451'
+                  }}
                 >
                   {serviceOptions.map((service, index) => (
                     <option key={index} value={index === 0 ? "" : service}>
@@ -517,7 +600,7 @@ const PickupScheduleForm = () => {
 
               {/* Preferred Pickup Date */}
               <div className="relative">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold mb-2" style={{ color: '#170d5c' }}>
                   Preferred Pickup Date <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -529,6 +612,10 @@ const PickupScheduleForm = () => {
                   min={getMinDate()}
                   max={getMaxDate()}
                   className={getFieldClasses("preferredPickupDate")}
+                  style={{ 
+                    focusRingColor: '#d9b451',
+                    focusBorderColor: '#d9b451'
+                  }}
                 />
                 {errors.preferredPickupDate && touched.preferredPickupDate && (
                   <div className="flex items-center mt-2 text-red-500 text-sm animate-fade-in">
@@ -540,7 +627,7 @@ const PickupScheduleForm = () => {
 
               {/* Preferred Time Slot */}
               <div className="relative md:col-span-2">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold mb-2" style={{ color: '#170d5c' }}>
                   Preferred Time Slot <span className="text-red-500">*</span>
                 </label>
                 <select
@@ -549,6 +636,10 @@ const PickupScheduleForm = () => {
                   onChange={handleInputChange}
                   onBlur={handleBlur}
                   className={getFieldClasses("preferredTimeSlot")}
+                  style={{ 
+                    focusRingColor: '#d9b451',
+                    focusBorderColor: '#d9b451'
+                  }}
                 >
                   {timeSlotOptions.map((slot, index) => (
                     <option key={index} value={index === 0 ? "" : slot}>
@@ -569,16 +660,16 @@ const PickupScheduleForm = () => {
           {/* Additional Information Section */}
           <div className="mb-8">
             <div className="flex items-center mb-6">
-              <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center text-white font-bold text-sm mr-3">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm mr-3" style={{ backgroundColor: '#d9b451' }}>
                 3
               </div>
-              <h2 className="text-xl font-bold text-gray-800">
+              <h2 className="text-xl font-bold" style={{ color: '#170d5c' }}>
                 Additional Information
               </h2>
             </div>
 
             <div className="relative">
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-sm font-semibold mb-2" style={{ color: '#170d5c' }}>
                 Special Instructions or Requests
               </label>
               <textarea
@@ -589,7 +680,11 @@ const PickupScheduleForm = () => {
                 placeholder="Any specific care instructions, allergies, or special requests..."
                 rows={4}
                 maxLength={500}
-                className="w-full px-4 py-3 bg-white/5 backdrop-blur-sm border-2 border-gray-200 rounded-xl transition-all duration-300 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-blue-400 hover:border-gray-300 focus:shadow-lg focus:shadow-blue-500/20 hover:shadow-md hover:shadow-blue-400/10 resize-none"
+                className="w-full px-4 py-3 bg-white/5 backdrop-blur-sm border-2 border-gray-200 rounded-xl transition-all duration-300 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-0 hover:border-gray-300 focus:shadow-lg hover:shadow-md resize-none"
+                style={{ 
+                  focusBorderColor: '#d9b451',
+                  focusShadowColor: 'rgba(217, 180, 81, 0.2)'
+                }}
               />
               {errors.specialInstructions && (
                 <div className="flex items-center mt-2 text-red-500 text-sm animate-fade-in">
@@ -597,7 +692,7 @@ const PickupScheduleForm = () => {
                   {errors.specialInstructions}
                 </div>
               )}
-              <div className="text-right text-sm text-gray-500 mt-1">
+              <div className="text-right text-sm mt-1" style={{ color: '#6c757d' }}>
                 {formData.specialInstructions.length}/500 characters
               </div>
             </div>
@@ -609,7 +704,13 @@ const PickupScheduleForm = () => {
               type="button"
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="relative inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-800 font-bold rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none min-w-[220px] animate-pulse-glow"
+              className="relative inline-flex items-center justify-center px-8 py-4 font-bold rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none min-w-[220px] animate-pulse-glow"
+              style={{
+                backgroundColor: '#d9b451',
+                color: '#170d5c',
+                boxShadow: '0 4px 15px rgba(217, 180, 81, 0.3)',
+                hoverShadowColor: 'rgba(217, 180, 81, 0.5)'
+              }}
             >
               {isSubmitting ? (
                 <div className="flex items-center">
@@ -623,10 +724,10 @@ const PickupScheduleForm = () => {
                 </div>
               )}
 
-              <div className="absolute inset-0 bg-gradient-to-r from-yellow-300 to-yellow-400 rounded-2xl opacity-0 hover:opacity-100 transition-opacity duration-300 -z-10 blur-xl"></div>
+              <div className="absolute inset-0 rounded-2xl opacity-0 hover:opacity-100 transition-opacity duration-300 -z-10 blur-xl" style={{ backgroundColor: '#d9b451' }}></div>
             </button>
 
-            <p className="text-sm text-gray-600 mt-4">
+            <p className="text-sm mt-4" style={{ color: '#6c757d' }}>
               We'll contact you within 2 hours to confirm your appointment
             </p>
           </div>

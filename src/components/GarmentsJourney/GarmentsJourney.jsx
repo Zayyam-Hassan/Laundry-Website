@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Truck,
   Search,
@@ -10,10 +10,85 @@ import {
 
 const GarmentJourney = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const [displayedTitle, setDisplayedTitle] = useState('');
+  const [titleIndex, setTitleIndex] = useState(0);
+  const [visibleSteps, setVisibleSteps] = useState({});
+  const sectionRef = useRef(null);
 
+  // Intersection Observer to detect when component is visible
   useEffect(() => {
-    setIsVisible(true);
-  }, []);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated) {
+          setHasAnimated(true);
+          // Reset typewriter effect
+          setDisplayedTitle('');
+          setTitleIndex(0);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasAnimated]);
+
+  // Typewriter effect for title
+  useEffect(() => {
+    if (isVisible && titleIndex < "Your Garment's Journey".length) {
+      const timer = setTimeout(() => {
+        setDisplayedTitle("Your Garment's Journey".slice(0, titleIndex + 1));
+        setTitleIndex(titleIndex + 1);
+      }, 120);
+      return () => clearTimeout(timer);
+    }
+  }, [titleIndex, isVisible]);
+
+  // Set component visible and trigger typewriter when intersection observer fires
+  useEffect(() => {
+    if (hasAnimated) {
+      setIsVisible(true);
+    }
+  }, [hasAnimated]);
+
+  // Fallback to make component visible if intersection observer doesn't fire
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!hasAnimated) {
+        setIsVisible(true);
+        setHasAnimated(true);
+      }
+    }, 1000); // Fallback after 1 second
+    return () => clearTimeout(timer);
+  }, [hasAnimated]);
+
+  // Function to handle step visibility
+  const handleStepVisibility = (stepId) => {
+    setVisibleSteps(prev => ({
+      ...prev,
+      [stepId]: true
+    }));
+  };
+
+  // Function to scroll to next step
+  const scrollToNextStep = (currentStepId) => {
+    const nextStepId = currentStepId + 1;
+    const nextStepElement = document.querySelector(`[data-step-id="${nextStepId}"]`);
+    
+    if (nextStepElement) {
+      const elementPosition = nextStepElement.offsetTop;
+      const offset = 100; // Offset to position step higher on screen
+      
+      window.scrollTo({
+        top: elementPosition - offset,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   const steps = [
     {
@@ -98,15 +173,21 @@ const GarmentJourney = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div ref={sectionRef} className="min-h-screen bg-gray-50">
       {/* Header */}
       <div
         className={`text-center py-20 px-6 transition-all duration-1000 ease-out ${
           isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
         }`}
       >
-        <h1 className="text-5xl lg:text-6xl font-bold text-blue-900 mb-6">
-          Your Garment's Journey
+        <h1 className="text-5xl lg:text-6xl font-bold mb-6" style={{ color: '#170d5c' }}>
+          {displayedTitle}
+          <span 
+            className={`transition-all duration-300 ${isVisible && titleIndex < "Your Garment's Journey".length ? 'animate-pulse' : 'opacity-0'}`} 
+            style={{ color: '#d9b451' }}
+          >
+            |
+          </span>
         </h1>
         <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
           Follow your clothes through our comprehensive care process, designed
@@ -118,16 +199,36 @@ const GarmentJourney = () => {
       <div className="max-w-7xl mx-auto px-6 pb-20">
         {steps.map((step, index) => {
           const Icon = step.icon;
+          const stepRef = useRef(null);
+          
+          // Individual intersection observer for each step
+          useEffect(() => {
+            const observer = new IntersectionObserver(
+              ([entry]) => {
+                if (entry.isIntersecting) {
+                  handleStepVisibility(step.id);
+                }
+              },
+              { threshold: 0.3 }
+            );
+
+            if (stepRef.current) {
+              observer.observe(stepRef.current);
+            }
+
+            return () => observer.disconnect();
+          }, [step.id]);
+
           return (
-            <div key={step.id} className="relative mb-20 last:mb-0">
+            <div key={step.id} ref={stepRef} data-step-id={step.id} className="relative mb-20 last:mb-0">
               {/* Step Content */}
               <div
                 className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center transition-all duration-1000 ease-out ${
-                  isVisible
+                  visibleSteps[step.id]
                     ? "translate-y-0 opacity-100"
                     : "translate-y-20 opacity-0"
                 }`}
-                style={{ transitionDelay: `${index * 150}ms` }}
+                style={{ transitionDelay: `${index * 100}ms` }}
               >
                 {/* Image Side */}
                 <div
@@ -154,13 +255,6 @@ const GarmentJourney = () => {
                       {/* Step Label */}
                       <div className="absolute top-4 left-4 bg-yellow-400 text-gray-800 px-3 py-1 rounded-lg text-sm font-semibold">
                         Step {step.id}
-                      </div>
-
-                      {/* Title Overlay */}
-                      <div className="absolute bottom-4 left-4 right-4">
-                        <h3 className="text-white text-xl font-bold bg-black/60 backdrop-blur-sm rounded-lg px-4 py-2">
-                          {step.title}
-                        </h3>
                       </div>
                     </div>
                   </div>
@@ -214,9 +308,12 @@ const GarmentJourney = () => {
               {/* Connecting Arrow */}
               {index < steps.length - 1 && (
                 <div className="flex justify-center mt-16">
-                  <div className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse">
-                    <ArrowDown className="w-6 h-6 text-gray-800" />
-                  </div>
+                  <button
+                    onClick={() => scrollToNextStep(step.id)}
+                    className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse hover:scale-110 cursor-pointer group"
+                  >
+                    <ArrowDown className="w-6 h-6 text-gray-800 group-hover:translate-y-1 transition-transform duration-300" />
+                  </button>
                 </div>
               )}
             </div>

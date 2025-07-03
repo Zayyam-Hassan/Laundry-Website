@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   CheckCircle2, 
   ArrowRight, 
@@ -26,6 +26,52 @@ const PricingPlans = ({
   const [hoveredPlan, setHoveredPlan] = useState(null);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const [displayedTitle, setDisplayedTitle] = useState('');
+  const [displayedSubtitle, setDisplayedSubtitle] = useState('');
+  const [titleIndex, setTitleIndex] = useState(0);
+  const [subtitleIndex, setSubtitleIndex] = useState(0);
+  const [isTitleComplete, setIsTitleComplete] = useState(false);
+  const sectionRef = useRef(null);
+
+  // Intersection Observer to detect when component is visible
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated) {
+          setIsVisible(true);
+          setHasAnimated(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasAnimated]);
+
+  // Typewriter effect for title
+  useEffect(() => {
+    if (isVisible && titleIndex < title.length) {
+      const timer = setTimeout(() => {
+        setDisplayedTitle(title.slice(0, titleIndex + 1));
+        setTitleIndex(titleIndex + 1);
+      }, 120);
+      return () => clearTimeout(timer);
+    } else if (isVisible && titleIndex >= title.length) {
+      setIsTitleComplete(true);
+    }
+  }, [titleIndex, title, isVisible]);
+
+  // Remove typewriter effect for subtitle - just use fade-in
+  useEffect(() => {
+    if (isVisible) {
+      setDisplayedSubtitle(subtitle);
+    }
+  }, [isVisible, subtitle]);
 
   // Default plans data if not provided
   const defaultPlans = [
@@ -67,84 +113,31 @@ const PricingPlans = ({
       highlight: true
     },
     {
-      id: 'luxury',
-      name: 'Luxury',
+      id: 'unlimited',
+      name: 'Unlimited',
       price: '75',
-      originalPrice: '99',
+      originalPrice: '120',
       period: 'per month',
-      discount: '24% OFF',
+      discount: '38% OFF',
       features: [
         { text: 'Unlimited pieces', icon: Infinity },
-        { text: 'All premium services', icon: Star },
-        { text: 'Same-day service available', icon: Zap },
-        { text: '24/7 support', icon: Headphones },
-        { text: 'White-glove service', icon: Shield },
-        { text: 'Custom care instructions', icon: CheckCircle2 },
-        { text: 'Wardrobe consultation', icon: Crown }
+        { text: 'All premium services', icon: Crown },
+        { text: 'Same-day delivery', icon: Truck },
+        { text: 'Priority scheduling', icon: Clock },
+        { text: '24/7 concierge', icon: Headphones },
+        { text: 'Premium care included', icon: Sparkles },
+        { text: 'Free dry cleaning', icon: Shield }
       ],
-      buttonText: 'Choose Luxury',
+      buttonText: 'Choose Unlimited',
       popular: false,
-      highlight: false
+      highlight: true
     }
   ];
 
-  const plansData = plans || defaultPlans;
-
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
-
-  const handlePlanClick = (plan) => {
-    setSelectedPlan(plan.id);
-    if (onPlanSelect) {
-      onPlanSelect(plan);
-    } else {
-      // Default behavior - redirect to subscribe page
-      window.location.href = `/subscribe?plan=${plan.id}`;
-    }
-  };
-
-  const getPlanCardClasses = (plan, index) => {
-    const baseClasses = `
-      relative rounded-2xl p-3 transition-all duration-300 ease-out cursor-pointer
-      backdrop-blur-sm border overflow-visible group
-      transform-gpu will-change-transform flex flex-col h-full
-      ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-    `;
-    
-    const hoverClasses = hoveredPlan === plan.id 
-      ? 'scale-[1.02] shadow-2xl' 
-      : '';
-    
-    const otherCardsClasses = hoveredPlan && hoveredPlan !== plan.id 
-      ? 'opacity-90 scale-[0.99]' 
-      : '';
-
-    const popularClasses = plan.popular 
-      ? 'bg-gradient-to-br from-white via-yellow-50 to-amber-50 border-yellow-300 shadow-lg shadow-yellow-400/20' 
-      : 'bg-white/90 border-gray-200 shadow-md';
-
-    return `${baseClasses} ${hoverClasses} ${otherCardsClasses} ${popularClasses}`;
-  };
+  const plansToUse = plans || defaultPlans;
 
   return (
-    <div className={`relative min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-16 px-4 overflow-hidden ${className}`}>
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div 
-          className="absolute top-20 left-10 w-64 h-64 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-float"
-          style={{ animationDelay: '0s' }}
-        />
-        <div 
-          className="absolute bottom-20 right-10 w-80 h-80 bg-gradient-to-r from-yellow-400/20 to-orange-400/20 rounded-full blur-3xl animate-float"
-          style={{ animationDelay: '2s' }} 
-        />
-        <div 
-          className="absolute top-1/2 left-1/2 w-56 h-56 bg-gradient-to-r from-indigo-400/10 to-blue-400/10 rounded-full blur-3xl animate-float"
-          style={{ animationDelay: '4s' }} 
-        />
-      </div>
-
+    <div ref={sectionRef} className={`min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 py-16 sm:py-24 px-4 sm:px-6 lg:px-8 ${className}`}>
       <div className="relative max-w-6xl mx-auto">
         {/* Header */}
         <div 
@@ -153,209 +146,169 @@ const PricingPlans = ({
           }`}
         >
           <div className="relative inline-block">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 bg-clip-text text-transparent mb-4 leading-tight tracking-tight">
-              {title}
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight tracking-tight min-h-[4rem] flex items-center justify-center" style={{ color: '#170d5c' }}>
+              {displayedTitle}
+              <span 
+                className={`transition-all duration-300 ${isVisible && titleIndex < title.length ? 'animate-pulse' : 'opacity-0'}`} 
+                style={{ color: '#d9b451' }}
+              >
+                |
+              </span>
             </h1>
-            {/* Animated underline */}
-            <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 rounded-full transition-all duration-1000 delay-500"
-                 style={{ width: isVisible ? '50%' : '0%' }} />
           </div>
           
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed font-medium mt-6 transform transition-all duration-1000 delay-300"
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed font-medium mt-6 transform transition-all duration-1000 delay-300 min-h-[2rem]"
              style={{ 
                opacity: isVisible ? 1 : 0,
                transform: isVisible ? 'translateY(0)' : 'translateY(20px)'
              }}>
-            {subtitle}
+            {displayedSubtitle}
           </p>
+
+          {/* Animated underline - moved under subtitle */}
+          <div 
+            className={`mt-8 w-24 h-1 mx-auto rounded-full transition-all duration-1000 delay-500 ${isVisible ? 'scale-x-100' : 'scale-x-0'}`}
+            style={{ background: 'linear-gradient(to right, #170d5c, #d9b451)' }}
+          />
         </div>
 
-        {/* Pricing Cards */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {plansData.map((plan, index) => (
+        {/* Plans Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {plansToUse.map((plan, index) => (
             <div
               key={plan.id}
-              className={getPlanCardClasses(plan, index)}
+              className={`relative group cursor-pointer transition-all duration-500 transform ${
+                hoveredPlan === plan.id ? 'scale-105 -translate-y-2' : 'hover:scale-102'
+              } ${
+                isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
+              }`}
+              style={{ transitionDelay: `${index * 200}ms` }}
               onMouseEnter={() => setHoveredPlan(plan.id)}
               onMouseLeave={() => setHoveredPlan(null)}
-              onClick={() => handlePlanClick(plan)}
-              style={{
-                transitionDelay: `${index * 150}ms`,
-                zIndex: hoveredPlan === plan.id ? 10 : 1
+              onClick={() => {
+                setSelectedPlan(plan.id);
+                onPlanSelect && onPlanSelect(plan);
               }}
             >
-              {/* Animated Border Gradient */}
-              <div className={`
-                absolute inset-0 rounded-2xl p-[1px] transition-all duration-300 ease-out
-                ${plan.popular ? 'bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400' : 'bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400'}
-                ${hoveredPlan === plan.id ? 'opacity-80' : 'opacity-0'}
-              `}>
-                <div className="w-full h-full bg-white rounded-[15px]" />
-              </div>
-
-              {/* Popular Badge */}
-              {plan.popular && (
-                <div className="absolute -top-4 -left-2 z-20">
-                  <div className="bg-gradient-to-r from-yellow-400 to-orange-400 text-black px-6 py-2 rounded-full text-xs font-bold shadow-lg flex items-center gap-2">
-                    <Crown size={16} className="fill-current" />
-                    Most Popular
-                    <Sparkles size={14} />
-                  </div>
-                </div>
-              )}
-
-              {/* Discount Badge */}
-              {showDiscounts && plan.discount && (
-                <div className="absolute top-4 right-4 z-10">
-                  <div className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-2 py-1 rounded-full text-xs font-bold shadow-sm">
-                    {plan.discount}
-                  </div>
-                </div>
-              )}
-
-              {/* Floating Particles */}
-              <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                {[...Array(3)].map((_, i) => (
-                  <div
-                    key={i}
-                    className={`absolute rounded-full transition-opacity duration-300 ease-out ${
-                      plan.popular 
-                        ? 'bg-yellow-400/60' 
-                        : 'bg-blue-400/60'
-                    }`}
-                    style={{
-                      width: `${Math.random() * 4 + 2}px`,
-                      height: `${Math.random() * 4 + 2}px`,
-                      top: `${Math.random() * 100}%`,
-                      left: `${Math.random() * 100}%`,
-                      opacity: hoveredPlan === plan.id ? 0.8 : 0,
-                      transform: hoveredPlan === plan.id 
-                        ? `translate(${Math.sin(Date.now() / 1000 + i) * 10}px, ${Math.cos(Date.now() / 1000 + i) * 10}px)` 
-                        : 'translate(0, 0)',
-                      transition: 'all 0.3s ease-out'
-                    }}
-                  />
-                ))}
-              </div>
-
-              {/* Plan Content */}
-              <div className="relative z-10 flex flex-col h-full">
-                {/* Plan Header */}
-                <div className="text-center mb-3">
-                  <h3 className="text-xl font-bold text-gray-800 mb-3 transition-colors duration-300 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-gray-800 group-hover:to-indigo-700 group-hover:bg-clip-text">
-                    {plan.name}
-                  </h3>
-                  <div className="space-y-1">
-                    {showDiscounts && plan.originalPrice && (
-                      <div className="text-sm text-gray-400 line-through">
-                        {currency}{plan.originalPrice}
-                      </div>
-                    )}
-                    <div className="flex items-baseline justify-center gap-1">
-                      <span className="text-4xl font-bold bg-gradient-to-r from-blue-700 to-indigo-700 bg-clip-text text-transparent">
-                        {currency}{plan.price}
-                      </span>
-                      <span className="text-gray-500 text-sm ml-1">
-                        {plan.period}
-                      </span>
+              {/* Plan Card */}
+              <div className={`relative p-8 rounded-3xl border-2 transition-all duration-500 min-h-[560px] ${
+                plan.popular 
+                  ? 'border-yellow-400 bg-gradient-to-br from-yellow-50 to-yellow-100/50 shadow-2xl shadow-yellow-400/20' 
+                  : plan.highlight 
+                  ? 'border-blue-400 bg-gradient-to-br from-blue-50 to-blue-100/50 shadow-xl shadow-blue-400/20' 
+                  : 'border-gray-200 bg-white shadow-lg hover:shadow-xl'
+              }`}>
+                {/* Popular Badge */}
+                {plan.popular && (
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-black px-6 py-2 rounded-full text-sm font-bold shadow-lg">
+                      Most Popular
                     </div>
                   </div>
+                )}
+
+                {/* Plan Header */}
+                <div className="text-center mb-8">
+                  <h3 className={`text-2xl font-bold mb-2 ${
+                    plan.popular ? 'text-yellow-800' : plan.highlight ? 'text-blue-800' : 'text-gray-800'
+                  }`}>
+                    {plan.name}
+                  </h3>
+                  
+                  {/* Price */}
+                  <div className="mb-4">
+                    <div className="flex items-baseline justify-center">
+                      <span className="text-4xl font-bold" style={{ color: '#170d5c' }}>
+                        {currency} {plan.price}
+                      </span>
+                      <span className="text-gray-500 ml-2">{plan.period}</span>
+                    </div>
+                    {showDiscounts && plan.originalPrice && (
+                      <div className="flex items-center justify-center mt-2">
+                        <span className="text-gray-400 line-through mr-2">
+                          {currency} {plan.originalPrice}
+                        </span>
+                        <span className="text-green-600 font-semibold text-sm">
+                          {plan.discount}
+                        </span>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
-                {/* Features List */}
-                <div className="space-y-3 mb-4 flex-grow">
+                {/* Features */}
+                <div className="space-y-4 mb-8">
                   {plan.features.map((feature, featureIndex) => {
-                    const IconComponent = feature.icon;
+                    const FeatureIcon = feature.icon;
                     return (
-                      <div
-                        key={featureIndex}
-                        className={`
-                          flex items-center gap-3 transition-all duration-300 ease-out
-                          p-1.5 rounded-lg
-                          ${hoveredPlan === plan.id ? 'transform translate-x-1 bg-white/40 shadow-sm' : 'transform translate-x-0'}
-                        `}
-                        style={{
-                          transitionDelay: hoveredPlan === plan.id ? `${featureIndex * 30}ms` : '0ms'
-                        }}
-                      >
-                        <div className={`
-                          rounded-full p-2 transition-all duration-300 ease-out flex items-center justify-center
-                          ${plan.popular 
-                            ? 'bg-gradient-to-r from-yellow-400/20 to-orange-400/20 text-yellow-700' 
-                            : 'bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700'
-                          }
-                          ${hoveredPlan === plan.id ? 'scale-105 shadow-sm' : 'scale-100'}
-                        `}>
-                          <IconComponent size={16} />
+                      <div key={featureIndex} className="flex items-center space-x-3">
+                        <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                          plan.popular ? 'bg-yellow-400 text-yellow-800' : plan.highlight ? 'bg-blue-400 text-blue-800' : 'bg-gray-200 text-gray-600'
+                        }`}>
+                          <FeatureIcon size={16} />
                         </div>
-                        <span className="text-gray-700 text-sm font-medium flex-1">
-                          {feature.text}
-                        </span>
+                        <span className="text-gray-700">{feature.text}</span>
                       </div>
                     );
                   })}
                 </div>
 
                 {/* CTA Button */}
-                <div className="mt-auto">
-                  <button
-                    className={`
-                      w-full py-3 px-4 rounded-xl font-bold text-sm
-                      transition-all duration-300 ease-out transform
-                      ${plan.popular 
-                        ? 'bg-gradient-to-r from-yellow-400 to-orange-400 text-black hover:from-yellow-500 hover:to-orange-500' 
-                        : 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700'
-                      }
-                      ${hoveredPlan === plan.id ? 'scale-[1.02] shadow-lg' : 'scale-100'}
-                      flex items-center justify-center gap-2
-                      ${selectedPlan === plan.id ? 'ring-2 ring-blue-300' : ''}
-                    `}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handlePlanClick(plan);
-                    }}
-                  >
-                    {plan.buttonText}
-                    <ArrowRight 
-                      size={16} 
-                      className={`
-                        transition-transform duration-300 ease-out
-                        ${hoveredPlan === plan.id ? 'translate-x-1' : 'translate-x-0'}
-                      `}
-                    />
-                  </button>
-                </div>
+                <button
+                  className={`w-full py-3 px-6 rounded-xl font-semibold transition-all duration-300 ${
+                    plan.popular 
+                      ? 'bg-yellow-400 text-black hover:bg-yellow-500 shadow-lg shadow-yellow-400/30' 
+                      : plan.highlight 
+                      ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-600/30' 
+                      : 'bg-gray-800 text-white hover:bg-gray-900'
+                  }`}
+                >
+                  {plan.buttonText}
+                </button>
+
+                {/* Glow Effect */}
+                {hoveredPlan === plan.id && (
+                  <div className={`absolute inset-0 rounded-3xl blur-xl opacity-30 animate-pulse ${
+                    plan.popular ? 'bg-yellow-400' : plan.highlight ? 'bg-blue-400' : 'bg-gray-400'
+                  }`}></div>
+                )}
               </div>
-
-              {/* Hover Glow Effect */}
-              <div className={`
-                absolute inset-0 rounded-2xl transition-opacity duration-300 ease-out pointer-events-none
-                ${plan.popular 
-                  ? 'bg-gradient-to-r from-yellow-400/5 via-orange-400/5 to-yellow-400/5' 
-                  : 'bg-gradient-to-r from-blue-400/5 via-indigo-400/5 to-blue-400/5'
-                }
-                ${hoveredPlan === plan.id ? 'opacity-100' : 'opacity-0'}
-              `} />
-
-              {/* Shimmer Effect */}
-              <div className={`
-                absolute inset-0 -translate-x-full transition-transform duration-700 ease-out
-                bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 pointer-events-none
-                ${hoveredPlan === plan.id ? 'translate-x-full' : '-translate-x-full'}
-              `} />
             </div>
           ))}
         </div>
+
+        {/* Loading effect at the bottom */}
+        {isVisible && (
+          <div className="mt-16 flex justify-center">
+            <div className="flex space-x-2">
+              {[...Array(5)].map((_, i) => (
+                <div
+                  key={i}
+                  className="w-2 h-2 rounded-full animate-pulse"
+                  style={{ 
+                    animationDelay: `${i * 200}ms`,
+                    background: i % 2 === 0 ? '#170d5c' : '#d9b451'
+                  }}
+                ></div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
-      <style jsx global>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0) rotate(0deg); }
-          50% { transform: translateY(-15px) rotate(2deg); }
+      <style jsx>{`
+        @keyframes fade-in-up {
+          from { 
+            opacity: 0; 
+            transform: translateY(30px); 
+          }
+          to { 
+            opacity: 1; 
+            transform: translateY(0); 
+          }
         }
-        
-        .animate-float {
-          animation: float 8s ease-in-out infinite;
+        .animate-fade-in-up {
+          animation: fade-in-up 0.8s ease-out forwards;
         }
       `}</style>
     </div>

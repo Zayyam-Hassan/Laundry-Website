@@ -12,70 +12,8 @@ const Card = ({
   const [isHovered, setIsHovered] = useState(false);
 
   const getCardStyles = () => {
-    const baseStyles = "group relative overflow-hidden rounded-2xl p-8 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 shadow-lg hover:shadow-2xl";
-    
-    switch (variant) {
-      case 'gradient':
-        return `${baseStyles} bg-white border-2 border-blue-100 hover:border-blue-200 hover:shadow-blue-100/20`;
-      case 'glow':
-        return `${baseStyles} bg-white border-2 border-emerald-100 hover:border-emerald-200 hover:shadow-emerald-100/20`;
-      case 'neon':
-        return `${baseStyles} bg-white border-2 border-purple-100 hover:border-purple-200 hover:shadow-purple-100/20`;
-      default:
-        return `${baseStyles} bg-white border-2 border-gray-100 hover:border-gray-200 hover:shadow-gray-100/20`;
-    }
-  };
-
-  const getIconStyles = () => {
-    switch (variant) {
-      case 'gradient':
-        return "text-blue-600 group-hover:text-blue-700";
-      case 'glow':
-        return "text-emerald-600 group-hover:text-emerald-700";
-      case 'neon':
-        return "text-purple-600 group-hover:text-purple-700";
-      default:
-        return "text-indigo-600 group-hover:text-indigo-700";
-    }
-  };
-
-  const getIconBgStyles = () => {
-    switch (variant) {
-      case 'gradient':
-        return "bg-gradient-to-br from-blue-50 to-blue-100 group-hover:from-blue-100 group-hover:to-blue-200";
-      case 'glow':
-        return "bg-gradient-to-br from-emerald-50 to-emerald-100 group-hover:from-emerald-100 group-hover:to-emerald-200";
-      case 'neon':
-        return "bg-gradient-to-br from-purple-50 to-purple-100 group-hover:from-purple-100 group-hover:to-purple-200";
-      default:
-        return "bg-gradient-to-br from-indigo-50 to-indigo-100 group-hover:from-indigo-100 group-hover:to-indigo-200";
-    }
-  };
-
-  const getTitleGradient = () => {
-    switch (variant) {
-      case 'gradient':
-        return "group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-blue-800";
-      case 'glow':
-        return "group-hover:bg-gradient-to-r group-hover:from-emerald-600 group-hover:to-emerald-800";
-      case 'neon':
-        return "group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-purple-800";
-      default:
-        return "group-hover:bg-gradient-to-r group-hover:from-indigo-600 group-hover:to-indigo-800";
-    }
-  };
-
-  const getAccentColor = () => {
-    switch (variant) {
-      case 'gradient':
-        return "bg-blue-500";
-      case 'glow':
-        return "bg-emerald-500";
-      case 'neon':
-        return "bg-purple-500";
-      default:
-        return "bg-indigo-500";
-    }
+    const baseStyles = "group relative overflow-hidden rounded-2xl p-8 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 shadow-lg hover:shadow-2xl h-80 flex flex-col";
+    return `${baseStyles} bg-[#170d5c]`;
   };
 
   return (
@@ -85,47 +23,53 @@ const Card = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Animated Shimmer Background */}
+      {/* Golden Shine Effect */}
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-50 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-100 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" style={{ '--tw-via-opacity': '0.6' }}></div>
       </div>
       
       {/* Content */}
-      <div className="relative z-10">
+      <div className="relative z-10 flex flex-col h-full">
         {/* Icon Container */}
-        <div className="relative mb-6">
-          <div className={`w-16 h-16 rounded-2xl ${getIconBgStyles()} flex items-center justify-center group-hover:scale-110 transition-all duration-300`}>
+        <div className="relative mb-3 flex-shrink-0">
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-all duration-300" style={{ 
+            background: '#d9b451'
+          }}>
             <Icon 
-              size={32} 
-              className={`${getIconStyles()} transition-all duration-300 ${isHovered ? 'animate-pulse' : ''}`}
+              size={28} 
+              className="transition-all duration-300"
+              style={{ color: '#fff' }}
             />
           </div>
           {/* Floating particles */}
-          <div className={`absolute -top-1 -right-1 w-3 h-3 ${getAccentColor()} rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping transition-opacity duration-300`}></div>
-          <div className={`absolute -bottom-1 -left-1 w-2 h-2 ${getAccentColor()} rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-pulse transition-opacity duration-500`}></div>
+          <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping transition-opacity duration-300" style={{ backgroundColor: '#fff' }}></div>
+          <div className="absolute -bottom-1 -left-1 w-2 h-2 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-pulse transition-opacity duration-500" style={{ backgroundColor: '#d9b451' }}></div>
         </div>
 
         {/* Title */}
-        <h3 className={`text-2xl font-bold text-gray-800 mb-4 group-hover:text-transparent group-hover:bg-clip-text ${getTitleGradient()} transition-all duration-300`}>
+        <h3 className="text-lg font-bold mb-2 transition-all duration-300 flex-shrink-0 line-clamp-2" style={{ color: '#fff' }}>
           {title}
         </h3>
 
         {/* Description */}
-        <p className="text-gray-600 group-hover:text-gray-700 transition-colors duration-300 mb-6 leading-relaxed">
+        <p className="transition-colors duration-300 mb-3 leading-relaxed flex-grow line-clamp-4 text-sm" style={{ color: '#fff' }}>
           {description}
         </p>
 
         {/* Features List */}
-        {features.length > 0 && (
-          <div className="space-y-3">
+        {features && features.length > 0 && (
+          <div className="space-y-1.5 flex-shrink-0">
             {features.map((feature, index) => (
-              <div 
-                key={index}
-                className="flex items-center space-x-3 opacity-90 group-hover:opacity-100 transition-all duration-300"
-                style={{ animationDelay: `${delay + (index * 100)}ms` }}
-              >
-                <div className={`w-2 h-2 rounded-full ${getAccentColor()} group-hover:scale-125 transition-transform duration-300`}></div>
-                <span className="text-gray-600 group-hover:text-gray-800 transition-colors duration-300 text-sm">
+              <div key={index} className="flex items-center space-x-2 group/feature">
+                <div className="w-4 h-4 rounded-full flex items-center justify-center transition-all duration-300 group-hover/feature:scale-110 flex-shrink-0" style={{ 
+                  backgroundColor: '#fff',
+                  color: '#170d5c'
+                }}>
+                  <svg className="w-2 h-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <span className="transition-colors duration-300 text-xs line-clamp-1" style={{ color: '#fff' }}>
                   {feature}
                 </span>
               </div>
@@ -133,11 +77,8 @@ const Card = ({
           </div>
         )}
       </div>
-
-      {/* Corner decoration */}
-      <div className={`absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-gray-200 group-hover:border-gray-400 transition-colors duration-300`}></div>
-      <div className={`absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-gray-200 group-hover:border-gray-400 transition-colors duration-300`}></div>
     </div>
   );
 };
+
 export default Card;

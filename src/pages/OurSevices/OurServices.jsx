@@ -22,6 +22,7 @@ import {
   ThumbsUp,
   Shirt,
   Bus,
+  ArrowRight,
 } from "lucide-react";
 const OurServices = () => {
   const servicesData = {
@@ -88,11 +89,11 @@ const OurServicesSteps =
       title: "How It Works",
       subtitle: "Experience the future of premium laundry care with our revolutionary process.",
       steps: [
-        { title: "Schedule Pickup", description: "Book a convenient pickup time through our app or website." },
-        { title: "Professional Collection", description: "Our uniformed staff collects your laundry with care and professionalism." },
-        { title: "Expert Cleaning", description: "Your items receive premium treatment at our state-of-the-art facility." },
-        { title: "Quality Check", description: "Each item undergoes thorough quality inspection before packaging." },
-        { title: "Fresh Delivery", description: "Your clean, fresh laundry is delivered right to your doorstep." }
+        { title: "Schedule Pickup", description: "Book a convenient pickup time through our app or website.", icon: Calendar },
+        { title: "Professional Collection", description: "Our uniformed staff collects your laundry with care and professionalism.", icon: Truck },
+        { title: "Expert Cleaning", description: "Your items receive premium treatment at our state-of-the-art facility.", icon: Sparkles },
+        { title: "Quality Check", description: "Each item undergoes thorough quality inspection before packaging.", icon: CheckCircle },
+        { title: "Fresh Delivery", description: "Your clean, fresh laundry is delivered right to your doorstep.", icon: ArrowRight }
       ],
       theme: 'ocean'
     };

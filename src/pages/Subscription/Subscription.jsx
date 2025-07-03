@@ -3,6 +3,7 @@ import FeatureForAll from "../../components/FeatureForAll/FeatureForAll";
 import CardsSection from "../../components/CardsSection/CardsSection";
 import PickupScheduleForm from "../../components/SubscribeNow/Subscribe";
 import ProcessStepBusiness from "../../components/ProcessStepsBusiness/ProcessStepsBusiness";
+import BookingPage from "../../components/BookingPage/BookingPage";
 import { Calendar, Truck, Star, CheckCircle } from "lucide-react";
 const Subscription = () => {
     const steps = [
@@ -48,7 +49,8 @@ const Subscription = () => {
           },
         ]}
       />
-      <PickupScheduleForm />
+      {/*<PickupScheduleForm />*/}
+      <BookingPage/>
           <ProcessStepBusiness 
       title="What Happens Next?"
       subtitle="Here's what you can expect after submitting your inquiry."

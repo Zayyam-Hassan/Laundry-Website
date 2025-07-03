@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { AlertCircle, CheckCircle2, Send, Sparkles } from "lucide-react";
-
+import axios from "axios";
+import { form } from "framer-motion/client";
 const BusinessProposalForm = () => {
   const [formData, setFormData] = useState({
     businessName: "",
@@ -16,6 +17,16 @@ const BusinessProposalForm = () => {
   const [touched, setTouched] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+
+  // Animation states
+  const [isVisible, setIsVisible] = useState(false);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const [displayedTitle, setDisplayedTitle] = useState('');
+  const [titleIndex, setTitleIndex] = useState(0);
+  const [showSubtitle, setShowSubtitle] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const [showUnderline, setShowUnderline] = useState(false);
+  const sectionRef = useRef(null);
 
   const businessTypes = [
     "Select Business Type",
@@ -268,40 +279,166 @@ const BusinessProposalForm = () => {
 
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
-    const formErrors = validateForm();
+  const formErrors = validateForm();
 
-    if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors);
-      setTouched(
-        Object.keys(formData).reduce(
-          (acc, key) => ({ ...acc, [key]: true }),
-          {}
-        )
-      );
-      return;
-    }
+  if (Object.keys(formErrors).length > 0) {
+    setErrors(formErrors);
+    setTouched(
+      Object.keys(formData).reduce(
+        (acc, key) => ({ ...acc, [key]: true }),
+        {}
+      )
+    );
+    return;
+  }
 
-    setIsSubmitting(true);
+  setIsSubmitting(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setShowSuccess(true);
-      setTimeout(() => setShowSuccess(false), 3000);
+  try {
+    // ✅ Prepare email content
+    const emailBody = `
+  <div style="max-width: 600px; margin: 0 auto; font-family: Arial, Helvetica, sans-serif; line-height: 1.6; color: #333;">
+    <!-- Header -->
+    <div style="background: #2563eb; padding: 30px 20px; text-align: center;">
+      <h1 style="color: white; margin: 0; font-size: 24px; font-weight: normal;">
+        New Business Proposal Request
+      </h1>
+    </div>
+    
+    <!-- Content Container -->
+    <div style="background: #ffffff; padding: 30px 25px;">
+      
+      <!-- Business Information Section -->
+      <div style="margin-bottom: 30px;">
+        <h2 style="color: #1f2937; font-size: 18px; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #e5e7eb;">
+          Business Information
+        </h2>
+        
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr>
+            <td style="padding: 12px 0; border-bottom: 1px solid #f3f4f6;">
+              <strong style="color: #374151;">Business Name:</strong>
+            </td>
+            <td style="padding: 12px 0; border-bottom: 1px solid #f3f4f6; color: #6b7280;">
+              ${formData.businessName}
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 0; border-bottom: 1px solid #f3f4f6;">
+              <strong style="color: #374151;">Business Type:</strong>
+            </td>
+            <td style="padding: 12px 0; border-bottom: 1px solid #f3f4f6; color: #6b7280;">
+              ${formData.businessType}
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 0;">
+              <strong style="color: #374151;">Monthly Volume:</strong>
+            </td>
+            <td style="padding: 12px 0; color: #6b7280;">
+              ${formData.monthlyVolume}
+            </td>
+          </tr>
+        </table>
+      </div>
+      
+      <!-- Contact Information Section -->
+      <div style="margin-bottom: 30px;">
+        <h2 style="color: #1f2937; font-size: 18px; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #e5e7eb;">
+          Contact Information
+        </h2>
+        
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr>
+            <td style="padding: 12px 0; border-bottom: 1px solid #f3f4f6;">
+              <strong style="color: #374151;">Contact Person:</strong>
+            </td>
+            <td style="padding: 12px 0; border-bottom: 1px solid #f3f4f6; color: #6b7280;">
+              ${formData.contactPerson}
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 0; border-bottom: 1px solid #f3f4f6;">
+              <strong style="color: #374151;">Email:</strong>
+            </td>
+            <td style="padding: 12px 0; border-bottom: 1px solid #f3f4f6;">
+              <a href="mailto:${formData.email}" style="color: #2563eb; text-decoration: none;">${formData.email}</a>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 0;">
+              <strong style="color: #374151;">Phone:</strong>
+            </td>
+            <td style="padding: 12px 0;">
+              <a href="tel:${formData.phone}" style="color: #2563eb; text-decoration: none;">${formData.phone}</a>
+            </td>
+          </tr>
+        </table>
+      </div>
+      
+      <!-- Additional Requirements Section -->
+      <div style="margin-bottom: 20px;">
+        <h2 style="color: #1f2937; font-size: 18px; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #e5e7eb;">
+          Additional Requirements
+        </h2>
+        
+        <div style="background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb;">
+          <p style="color: #6b7280; font-size: 14px; line-height: 1.6; margin: 0; white-space: pre-wrap;">${formData.additionalRequirements || 'No additional requirements specified.'}</p>
+        </div>
+      </div>
+      
+      <!-- Footer -->
+      <div style="text-align: center; margin-top: 25px; padding-top: 15px; border-top: 1px solid #e5e7eb;">
+        <p style="color: #9ca3af; font-size: 12px; margin: 0;">
+          Submitted on ${new Date().toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          })} at ${new Date().toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit'
+          })}
+        </p>
+      </div>
+    </div>
+  </div>
+`;
 
-      // Reset form after successful submission
-      setFormData({
-        businessName: "",
-        contactPerson: "",
-        email: "",
-        phone: "",
-        businessType: "",
-        monthlyVolume: "",
-        additionalRequirements: "",
-      });
-      setTouched({});
-      setErrors({});
-    }, 2000);
+    await axios.post('http://localhost:5000/api/send-email', {
+      subject: `New Business Proposal Request from ${formData.businessName}`,
+      text: `Business Name: ${formData.businessName}
+Contact Person: ${formData.contactPerson}
+Email: ${formData.email}
+Phone: ${formData.phone}
+Business Type: ${formData.businessType}
+Monthly Volume: ${formData.monthlyVolume}
+Additional Requirements: ${formData.additionalRequirements}
+      `,
+      html: emailBody,
+    });
+
+    // ✅ Success flow
+    setIsSubmitting(false);
+    setShowSuccess(true);
+    setTimeout(() => setShowSuccess(false), 3000);
+
+    // ✅ Reset form
+    setFormData({
+      businessName: "",
+      contactPerson: "",
+      email: "",
+      phone: "",
+      businessType: "",
+      monthlyVolume: "",
+      additionalRequirements: "",
+    });
+    setTouched({});
+    setErrors({});
+  } catch (error) {
+    console.error('Error sending email:', error);
+    setIsSubmitting(false);
+    // Optional: show error toast
+  }
   };
 
   const getFieldClasses = (fieldName) => {
@@ -315,27 +452,81 @@ const BusinessProposalForm = () => {
     }
   };
 
+  // Intersection Observer to detect when user scrolls to this component
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated) {
+          setHasAnimated(true);
+          setIsVisible(true);
+          
+          // Start fade-in animations with delays
+          setTimeout(() => setShowSubtitle(true), 300);
+          setTimeout(() => setShowUnderline(true), 600);
+          setTimeout(() => setShowForm(true), 900);
+        }
+      },
+      { 
+        threshold: 0.2, // Trigger when 20% of component is visible
+        rootMargin: '0px 0px -100px 0px' // Trigger 100px before component enters viewport
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasAnimated]);
+
+  // Typewriter effect for title
+  useEffect(() => {
+    if (isVisible && titleIndex < "Request a Laundry Service Proposal".length) {
+      const timer = setTimeout(() => {
+        setDisplayedTitle("Request a Laundry Service Proposal".slice(0, titleIndex + 1));
+        setTitleIndex(titleIndex + 1);
+      }, 120);
+      return () => clearTimeout(timer);
+    }
+  }, [titleIndex, isVisible]);
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-100 p-4 flex items-center justify-center">
-      <div className="w-full max-w-4xl">
+    <div 
+      ref={sectionRef} 
+      className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 py-20 px-6 relative overflow-hidden flex items-center justify-center"
+    >
+      <div className="w-full max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8 relative mt-4">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 blur-3xl rounded-full animate-pulse"></div>
           <div className="relative">
             <div className="relative inline-block">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 bg-clip-text text-transparent mb-4 leading-tight tracking-tight">
-                Request a Laundry Service Proposal
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight tracking-tight min-h-[3rem] flex items-center justify-center" style={{ color: '#170d5c' }}>
+                {displayedTitle}
+                <span 
+                  className={`transition-all duration-300 ${isVisible && titleIndex < "Request a Laundry Service Proposal".length ? 'animate-pulse' : 'opacity-0'}`} 
+                  style={{ color: '#d9b451' }}
+                >
+                  |
+                </span>
               </h1>
-              {/* Animated underline */}
-              <div
-                className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 rounded-full transition-all duration-1000 delay-500"
-                style={{ width: "50%" }}
-              />
             </div>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed font-medium mt-6">
+            <p className={`text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed font-medium mt-6 transform transition-all duration-500`}
+               style={{ 
+                 opacity: showSubtitle ? 1 : 0,
+                 transform: showSubtitle ? 'translateY(0)' : 'translateY(20px)'
+               }}>
               Get a customized laundry solution and pricing for your business
               needs.
             </p>
+            {/* Animated underline - moved after subheading */}
+            <div
+              className={`mt-6 w-24 h-1 mx-auto rounded-full transition-all duration-500`}
+              style={{ 
+                background: 'linear-gradient(to right, #170d5c, #d9b451)',
+                opacity: showUnderline ? 1 : 0,
+                transform: showUnderline ? 'scaleX(1)' : 'scaleX(0)'
+              }}
+            />
           </div>
         </div>
 
@@ -348,7 +539,11 @@ const BusinessProposalForm = () => {
         )}
 
         {/* Form */}
-        <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border border-white/20">
+        <div className={`bg-white/70 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border border-white/20 transform transition-all duration-500`}
+             style={{ 
+               opacity: showForm ? 1 : 0,
+               transform: showForm ? 'translateY(0)' : 'translateY(30px)'
+             }}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Business Name */}
             <div className="relative">
@@ -536,11 +731,15 @@ const BusinessProposalForm = () => {
               type="button"
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="relative inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-800 font-bold rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none min-w-[200px] animate-pulse-glow"
+              className="relative inline-flex items-center justify-center px-8 py-4 text-black font-bold rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none min-w-[200px] animate-pulse-glow"
+              style={{ 
+                backgroundColor: '#d9b451',
+                boxShadow: '0 0 20px rgba(217, 180, 81, 0.3)'
+              }}
             >
               {isSubmitting ? (
                 <div className="flex items-center">
-                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-gray-800 border-t-transparent mr-2"></div>
+                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-black border-t-transparent mr-2"></div>
                   Submitting...
                 </div>
               ) : (
@@ -554,7 +753,7 @@ const BusinessProposalForm = () => {
               )}
 
               {/* Animated background effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-yellow-300 to-yellow-400 rounded-2xl opacity-0 hover:opacity-100 transition-opacity duration-300 -z-10 blur-xl"></div>
+              <div className="absolute inset-0 rounded-2xl opacity-0 hover:opacity-100 transition-opacity duration-300 -z-10 blur-xl" style={{ backgroundColor: '#d9b451dd' }}></div>
             </button>
           </div>
         </div>

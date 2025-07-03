@@ -1,7 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Copy, Share2, Sparkles, Users } from 'lucide-react';
 
 function ReferralComponent() {
+  // Animation states
+  const [isVisible, setIsVisible] = useState(false);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const [displayedTitle, setDisplayedTitle] = useState('');
+  const [titleIndex, setTitleIndex] = useState(0);
+  const [showSubtitle, setShowSubtitle] = useState(false);
+  const [showUnderline, setShowUnderline] = useState(false);
+  const [showMainCard, setShowMainCard] = useState(false);
+  const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
+  const sectionRef = useRef(null);
+
   const [copied, setCopied] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
@@ -10,6 +21,45 @@ function ReferralComponent() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Intersection Observer to detect when user scrolls to this component
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated) {
+          setHasAnimated(true);
+          setIsVisible(true);
+          
+          // Start fade-in animations with delays
+          setTimeout(() => setShowSubtitle(true), 300);
+          setTimeout(() => setShowUnderline(true), 600);
+          setTimeout(() => setShowMainCard(true), 900);
+          setTimeout(() => setShowAdditionalInfo(true), 1200);
+        }
+      },
+      { 
+        threshold: 0.2, // Trigger when 20% of component is visible
+        rootMargin: '0px 0px -100px 0px' // Trigger 100px before component enters viewport
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasAnimated]);
+
+  // Typewriter effect for title
+  useEffect(() => {
+    if (isVisible && titleIndex < "Start Referring Today".length) {
+      const timer = setTimeout(() => {
+        setDisplayedTitle("Start Referring Today".slice(0, titleIndex + 1));
+        setTitleIndex(titleIndex + 1);
+      }, 120);
+      return () => clearTimeout(timer);
+    }
+  }, [titleIndex, isVisible]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(referralCode);
@@ -28,41 +78,64 @@ function ReferralComponent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl">
+    <div ref={sectionRef} className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 py-20 px-6 relative overflow-hidden flex items-center justify-center">
+      {/* Background Elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 left-20 w-72 h-72 rounded-full blur-3xl animate-pulse" style={{ backgroundColor: 'rgba(23, 13, 92, 0.1)' }}></div>
+        <div className="absolute bottom-20 right-20 w-96 h-96 rounded-full blur-3xl animate-pulse" style={{ backgroundColor: 'rgba(217, 180, 81, 0.1)', animationDelay: '1s' }}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full blur-3xl animate-pulse" style={{ backgroundColor: 'rgba(23, 13, 92, 0.1)', animationDelay: '2s' }}></div>
+      </div>
+
+      <div className="w-full max-w-2xl relative z-10">
         {/* Header */}
         <div className="text-center mb-12 relative mt-4">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 blur-3xl rounded-full animate-pulse"></div>
           <div className="relative">
             <div className="relative inline-block">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 bg-clip-text text-transparent mb-4 leading-tight tracking-tight">
-                Start Referring Today
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight tracking-tight min-h-[3rem] flex items-center justify-center" style={{ color: '#170d5c' }}>
+                {displayedTitle}
+                <span 
+                  className={`transition-all duration-300 ${isVisible && titleIndex < "Start Referring Today".length ? 'animate-pulse' : 'opacity-0'}`} 
+                  style={{ color: '#d9b451' }}
+                >
+                  |
+                </span>
               </h1>
-              {/* Animated underline */}
-              <div
-                className={`absolute -bottom-1 left-1/2 transform -translate-x-1/2 h-0.5 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 rounded-full transition-all duration-1000 delay-500 ${
-                  mounted ? 'w-1/2' : 'w-0'
-                }`}
-              />
             </div>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed font-medium mt-6">
+            <p className={`text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed font-medium mt-6 transform transition-all duration-500`}
+               style={{ 
+                 opacity: showSubtitle ? 1 : 0,
+                 transform: showSubtitle ? 'translateY(0)' : 'translateY(20px)'
+               }}>
               Share your unique referral code with friends and start earning rewards.
             </p>
+            {/* Colored bar - moved after subtitle */}
+            <div
+              className={`mt-6 w-24 h-1 mx-auto rounded-full transition-all duration-500`}
+              style={{ 
+                background: 'linear-gradient(to right, #170d5c, #d9b451)',
+                opacity: showUnderline ? 1 : 0,
+                transform: showUnderline ? 'scaleX(1)' : 'scaleX(0)'
+              }}
+            />
           </div>
         </div>
 
         {/* Main Card */}
-        <div className="relative group">
+        <div className={`relative group transform transition-all duration-500`}
+             style={{ 
+               opacity: showMainCard ? 1 : 0,
+               transform: showMainCard ? 'translateY(0)' : 'translateY(30px)'
+             }}>
           {/* Animated background glow */}
-          <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-indigo-600/20 rounded-3xl blur-lg group-hover:blur-xl transition-all duration-500 animate-pulse"></div>
+          <div className="absolute -inset-1 rounded-3xl blur-lg group-hover:blur-xl transition-all duration-500 animate-pulse" style={{ backgroundColor: 'rgba(23, 13, 92, 0.1)' }}></div>
           
           {/* Card */}
           <div className="relative bg-white/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 p-8 sm:p-12 overflow-hidden">
             {/* Floating particles */}
-            <div className="absolute top-4 right-4 text-blue-400/30 animate-bounce">
+            <div className="absolute top-4 right-4 animate-bounce" style={{ color: 'rgba(23, 13, 92, 0.3)' }}>
               <Sparkles size={24} />
             </div>
-            <div className="absolute bottom-4 left-4 text-purple-400/30 animate-bounce" style={{ animationDelay: '0.5s' }}>
+            <div className="absolute bottom-4 left-4 animate-bounce" style={{ color: 'rgba(217, 180, 81, 0.3)', animationDelay: '0.5s' }}>
               <Users size={20} />
             </div>
 
@@ -167,12 +240,13 @@ function ReferralComponent() {
                 <button
                   onClick={handleWhatsAppShare}
                   disabled={!isFlipped}
-                  className={`group relative overflow-hidden bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3 ${
+                  className={`group relative overflow-hidden text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3 ${
                     !isFlipped ? 'cursor-not-allowed' : ''
                   }`}
+                  style={{ backgroundColor: '#25D366' }}
                 >
                   {/* Button glow effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-500 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500"></div>
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" style={{ backgroundColor: '#25D366' }}></div>
                   
                   <div className="relative flex items-center gap-3">
                     <Share2 size={20} className="group-hover:rotate-12 transition-transform duration-300" />
@@ -187,12 +261,13 @@ function ReferralComponent() {
                 <button
                   onClick={handleCopy}
                   disabled={!isFlipped}
-                  className={`group relative overflow-hidden bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3 ${
+                  className={`group relative overflow-hidden text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3 ${
                     !isFlipped ? 'cursor-not-allowed' : ''
                   }`}
+                  style={{ backgroundColor: '#d9b451' }}
                 >
                   {/* Button glow effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-indigo-500 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500"></div>
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" style={{ backgroundColor: '#d9b451' }}></div>
                   
                   <div className="relative flex items-center gap-3">
                     <Copy size={20} className={`transition-transform duration-300 ${copied ? 'scale-110' : 'group-hover:scale-110'}`} />
@@ -204,7 +279,7 @@ function ReferralComponent() {
                   
                   {/* Success ripple effect */}
                   {copied && (
-                    <div className="absolute inset-0 bg-green-400/30 rounded-xl animate-ping"></div>
+                    <div className="absolute inset-0 rounded-xl animate-ping" style={{ backgroundColor: 'rgba(217, 180, 81, 0.3)' }}></div>
                   )}
                 </button>
               </div>
@@ -229,8 +304,12 @@ function ReferralComponent() {
         </div>
 
         {/* Additional Info */}
-        <div className="text-center mt-8 text-gray-500">
-          <p className="text-sm">
+        <div className={`text-center mt-8 transform transition-all duration-500`}
+             style={{ 
+               opacity: showAdditionalInfo ? 1 : 0,
+               transform: showAdditionalInfo ? 'translateY(0)' : 'translateY(30px)'
+             }}>
+          <p className="text-sm" style={{ color: '#170d5c' }}>
             Earn rewards for every successful referral • Terms and conditions apply
           </p>
         </div>

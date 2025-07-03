@@ -53,7 +53,7 @@ const OurProcess = () => {
     ],
   };
   const facilityData = {
-    title: "Our State-of-the-Art Facility",
+    title: "Our State of the Art Facility",
     subtitle:
       "Advanced technology and expert craftsmanship come together in our modern facility.",
     cards: [

@@ -2,7 +2,7 @@ import React from 'react'
 import CallToAction from '../../components/CallToAction/CallToAction'
 import FeatureForAll from '../../components/FeatureForAll/FeatureForAll'
 import BusinessProposalForm from '../../components/BusinessProposal/proposal'
-import { Hotel, Scissors, Dumbbell, HeartPulse, Briefcase,CheckCircle,Building2,Award,Users,User, Calendar,ArrowRight, Phone } from 'lucide-react';
+import { Hotel,Utensils, Scissors, Dumbbell, HeartPulse, Briefcase,CheckCircle,Building2,Award,Users,User, Calendar,ArrowRight, Phone } from 'lucide-react';
 import CardsSection from '../../components/CardsSection/CardsSection'
 const Business = () => {
      const industriesData = {
@@ -68,6 +68,18 @@ const Business = () => {
         "Cost-effective"
       ],
       variant: "neon"
+    },
+    {
+      icon: Utensils,
+      title: "Food & Beverage (F&B)",
+      description: "Restaurants, cafes, bakeries, and catering companies",
+      features: [
+        "Chef uniforms",
+        "Aprons",
+        "Tablecloths and napkins",
+        "Stain removal, odor control, and regular pick-up schedules"
+      ],
+      variant: "glow"
     }
   ]
 };

@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { CheckCircle, ArrowRight, Sparkles } from "lucide-react";
 
 const ProcessStepBusiness = ({
@@ -21,6 +20,56 @@ const ProcessStepBusiness = ({
     }
   ],
 }) => {
+  // Animation states
+  const [isVisible, setIsVisible] = useState(false);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const [displayedTitle, setDisplayedTitle] = useState('');
+  const [titleIndex, setTitleIndex] = useState(0);
+  const [showSubtitle, setShowSubtitle] = useState(false);
+  const [showUnderline, setShowUnderline] = useState(false);
+  const [showSteps, setShowSteps] = useState(false);
+  const sectionRef = useRef(null);
+
+  const [hoveredCard, setHoveredCard] = useState(null);
+
+  // Intersection Observer to detect when user scrolls to this component
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated) {
+          setHasAnimated(true);
+          setIsVisible(true);
+          
+          // Start fade-in animations with delays
+          setTimeout(() => setShowSubtitle(true), 300);
+          setTimeout(() => setShowUnderline(true), 600);
+          setTimeout(() => setShowSteps(true), 900);
+        }
+      },
+      { 
+        threshold: 0.2, // Trigger when 20% of component is visible
+        rootMargin: '0px 0px -100px 0px' // Trigger 100px before component enters viewport
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasAnimated]);
+
+  // Typewriter effect for title
+  useEffect(() => {
+    if (isVisible && titleIndex < title.length) {
+      const timer = setTimeout(() => {
+        setDisplayedTitle(title.slice(0, titleIndex + 1));
+        setTitleIndex(titleIndex + 1);
+      }, 120);
+      return () => clearTimeout(timer);
+    }
+  }, [titleIndex, isVisible, title]);
+
   // Determine grid classes based on columns prop
   const getGridClasses = () => {
     const columnMap = {
@@ -34,59 +83,56 @@ const ProcessStepBusiness = ({
     return columnMap[columns] || 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3';
   };
 
-  const [isVisible, setIsVisible] = useState(false);
-  const [hoveredCard, setHoveredCard] = useState(null);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 100);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50 py-16 sm:py-24 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center">
+    <div ref={sectionRef} className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center" style={{ background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)' }}>
       <div className="max-w-7xl mx-auto w-full">
         {/* Header */}
-        <div
-          className={`text-center mb-16 mt-4 transform transition-all duration-1000 ${
-            isVisible ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"
-          }`}
-        >
-          <div className="relative inline-block">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 bg-clip-text text-transparent mb-4 leading-tight tracking-tight">
-              {title}
-            </h1>
-            {/* Animated underline */}
+        <div className="text-center mb-16 mt-4">
+          <div className="relative">
+            <div className="relative inline-block">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight tracking-tight min-h-[3rem] flex items-center justify-center" style={{ color: '#170d5c' }}>
+                {displayedTitle}
+                <span 
+                  className={`transition-all duration-300 ${isVisible && titleIndex < title.length ? 'animate-pulse' : 'opacity-0'}`} 
+                  style={{ color: '#d9b451' }}
+                >
+                  |
+                </span>
+              </h1>
+            </div>
+            <p className={`text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed font-medium mt-6 transform transition-all duration-500`}
+               style={{ 
+                 opacity: showSubtitle ? 1 : 0,
+                 transform: showSubtitle ? 'translateY(0)' : 'translateY(20px)'
+               }}>
+              {subtitle}
+            </p>
+            {/* Colored bar - moved after subtitle */}
             <div
-              className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 rounded-full transition-all duration-1000 delay-500"
-              style={{ width: isVisible ? "50%" : "0%" }}
+              className={`mt-6 w-24 h-1 mx-auto rounded-full transition-all duration-500`}
+              style={{ 
+                background: 'linear-gradient(to right, #170d5c, #d9b451)',
+                opacity: showUnderline ? 1 : 0,
+                transform: showUnderline ? 'scaleX(1)' : 'scaleX(0)'
+              }}
             />
           </div>
-
-          <p
-            className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed font-medium mt-6 transform transition-all duration-1000 delay-300"
-            style={{
-              opacity: isVisible ? 1 : 0,
-              transform: isVisible ? "translateY(0)" : "translateY(20px)",
-            }}
-          >
-            {subtitle}
-          </p>
         </div>
 
         {/* Steps Container */}
         <div className="relative">
           {/* Connection Line - Hidden on mobile */}
-          <div className="hidden md:block absolute top-20 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-indigo-200 to-transparent"></div>
+          <div className="hidden md:block absolute top-20 left-0 right-0 h-0.5" style={{ background: 'linear-gradient(to right, transparent, rgba(23, 13, 92, 0.2), transparent)' }}></div>
           
           {/* Steps Grid */}
-          <div className={`grid ${getGridClasses()} gap-8 lg:gap-6`}>
+          <div className={`grid ${getGridClasses()} gap-8 lg:gap-6 transition-all duration-1000 ease-out transform ${
+            showSteps ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}>
             {steps.map((step, index) => (
               <div
                 key={index}
                 className={`relative transform transition-all duration-700 ease-out ${
-                  isVisible 
+                  showSteps 
                     ? "translate-y-0 opacity-100" 
                     : "translate-y-20 opacity-0"
                 }`}
@@ -98,27 +144,20 @@ const ProcessStepBusiness = ({
               >
                 {/* Card */}
                 <div className="relative group h-full">
-                  {/* Animated background glow */}
-                  <div 
-                    className={`absolute -inset-2 bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20 rounded-2xl blur-xl transition-all duration-500 ${
-                      hoveredCard === index ? 'opacity-100 scale-105' : 'opacity-0 scale-95'
-                    }`}
-                  ></div>
-                  
                   {/* Main card */}
-                  <div className={`relative bg-white rounded-2xl p-8 lg:p-10 h-full shadow-lg border border-gray-100 transition-all duration-500 ease-out transform ${
+                  <div className={`relative rounded-2xl p-8 lg:p-10 h-full shadow-lg transition-all duration-500 ease-out transform ${
                     hoveredCard === index 
-                      ? 'scale-105 shadow-2xl border-indigo-200' 
-                      : 'scale-100 hover:shadow-xl'
-                  }`}>
+                      ? 'scale-105 shadow-xl' 
+                      : 'scale-100 hover:shadow-lg'
+                  }`} style={{ background: '#170d5c' }}>
                     
                     {/* Floating number badge */}
                     <div className={`absolute -top-6 left-8 transition-all duration-500 ${
                       hoveredCard === index ? 'scale-110 -rotate-3' : 'scale-100 rotate-0'
                     }`}>
                       <div className="relative">
-                        <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full blur-md opacity-50"></div>
-                        <div className="relative w-14 h-14 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 flex items-center justify-center text-white font-black text-xl shadow-lg">
+                        <div className="absolute inset-0 rounded-full blur-md opacity-50" style={{ backgroundColor: '#d9b451' }}></div>
+                        <div className="relative w-14 h-14 rounded-full flex items-center justify-center text-white font-black text-xl shadow-lg" style={{ backgroundColor: '#d9b451' }}>
                           {index + 1}
                         </div>
                       </div>
@@ -131,39 +170,34 @@ const ProcessStepBusiness = ({
                         <div className={`transition-all duration-300 ${
                           hoveredCard === index ? 'scale-110 rotate-12' : 'scale-100 rotate-0'
                         }`}>
-                          <CheckCircle className="w-7 h-7 text-indigo-500 mr-3" />
+                          <CheckCircle className="w-7 h-7 mr-3" style={{ color: '#fff', background: '#d9b451', borderRadius: '9999px', padding: '4px' }} />
                         </div>
-                        <h3 className="text-xl font-bold text-gray-900 leading-tight">
+                        <h3 className="text-xl font-bold leading-tight" style={{ color: '#fff' }}>
                           {step.title}
                         </h3>
                       </div>
 
                       {/* Description */}
-                      <p className="text-gray-600 leading-relaxed">
+                      <p className="leading-relaxed" style={{ color: '#fff' }}>
                         {step.description}
                       </p>
                     </div>
 
                     {/* Decorative elements */}
-                    <div className="absolute top-4 right-4 w-8 h-8 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-full opacity-50"></div>
-                    <div className="absolute bottom-4 left-4 w-6 h-6 bg-gradient-to-br from-pink-100 to-indigo-100 rounded-full opacity-30"></div>
-
-                    {/* Bottom gradient line */}
-                    <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-b-2xl transition-all duration-500 ${
-                      hoveredCard === index ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
-                    }`}></div>
+                    <div className="absolute top-4 right-4 w-8 h-8 rounded-full opacity-50" style={{ backgroundColor: 'rgba(255,255,255,0.08)' }}></div>
+                    <div className="absolute bottom-4 left-4 w-6 h-6 rounded-full opacity-30" style={{ backgroundColor: 'rgba(217, 180, 81, 0.12)' }}></div>
                   </div>
                 </div>
 
                 {/* Connection arrow for larger screens */}
                 {index < steps.length - 1 && (
                   <div className="hidden lg:block absolute -right-3 top-20 z-10">
-                    <div className={`w-12 h-12 rounded-full bg-white shadow-lg border-2 border-indigo-200 flex items-center justify-center transition-all duration-500 ${
+                    <div className={`w-12 h-12 rounded-full bg-white shadow-lg border-2 flex items-center justify-center transition-all duration-500 ${
                       hoveredCard === index || hoveredCard === index + 1
-                        ? 'scale-110 border-indigo-400 bg-indigo-50'
+                        ? 'scale-110 border-gray-300'
                         : 'scale-100'
-                    }`}>
-                      <ArrowRight className="w-5 h-5 text-indigo-500" />
+                    }`} style={{ borderColor: '#d9b451' }}>
+                      <ArrowRight className="w-5 h-5" style={{ color: '#170d5c' }} />
                     </div>
                   </div>
                 )}

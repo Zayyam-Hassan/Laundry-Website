@@ -224,7 +224,11 @@ const Fabrics = () => {
           value: "99.9%",
           label: "Stain Removal Success",
         }}
-        theme={professionalCareTheme}
+        theme={{
+          ...professionalCareTheme,
+          titleColor: "text-[#170d5c]",
+          customTitleStyle: { color: '#170d5c' }
+        }}
       />
       <CallToAction
         headline="Download Our Complete Care Guide"
