@@ -12,7 +12,7 @@ const Contact = () => {
         subtitle="We're here to help with any questions about our premium laundry services. Get in touch with our friendly team."
         highlightText="Live Chat Available 24/7"
         highlightIcon={MessageCircle}
-        showFeatures={false}
+        showFeatures={true}
         features={[
           {
             icon: MessageCircle,

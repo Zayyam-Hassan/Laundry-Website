@@ -151,7 +151,7 @@ const OurProcess = () => {
         subtitle="Discover the meticulous care and attention that goes into every step of our premium laundry service. From pickup to delivery, we ensure excellence at every stage."
         highlightText="Transparency in Every Step"
         highlightIcon={CheckCircle}
-        showFeatures={false}
+        showFeatures={true}
         features={[
           {
             icon: Truck,

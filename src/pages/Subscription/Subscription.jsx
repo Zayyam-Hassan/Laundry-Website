@@ -27,7 +27,7 @@ const Subscription = () => {
         subtitle="Fill out the form below to schedule your first pickup and join thousands of satisfied customers who trust FarrariGo for their laundry needs."
         highlightText="Free Pickup"
         highlightIcon={Truck}
-        showFeatures={false}
+        showFeatures={true}
         features={[
           {
             icon: Star,

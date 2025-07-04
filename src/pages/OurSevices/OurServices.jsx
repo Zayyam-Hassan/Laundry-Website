@@ -105,7 +105,7 @@ const OurServicesSteps =
         subtitle="Experience the convenience of subscription-based laundry service with premium quality and professional care for all your garments."
         highlightText="Free Pickup & Delivery Included"
         highlightIcon={Truck}
-        showFeatures={false}
+        showFeatures={true}
         features={[
           {
             icon: Star,

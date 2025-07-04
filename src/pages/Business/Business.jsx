@@ -114,7 +114,7 @@ const Business = () => {
   subtitle="Partner with FarrariGo to provide premium laundry services for your business. Professional solutions for hotels, salons, gyms, clinics, and offices."
   highlightText="Trusted by 500+ Businesses in Kuwait"
   highlightIcon={CheckCircle}
-  showFeatures={false}
+  showFeatures={true}
   features={[
     {
       icon: Building2,
@@ -147,7 +147,7 @@ const Business = () => {
       ]}
       primaryButton={{
         text: "Get Started",
-        link: "/get-started",
+        link: "/subscription",
         Icon: ArrowRight
       }}
       secondaryButton={{

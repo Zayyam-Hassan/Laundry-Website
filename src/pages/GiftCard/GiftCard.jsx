@@ -52,7 +52,7 @@ const GiftCard = () => {
   subtitle="Share the gift of premium laundry care with friends and family. Perfect for any occasion, our gift cards bring convenience and luxury to those you care about."
   highlightText="Digital & Physical Cards"
   highlightIcon={Gift}
-  showFeatures={false}
+  showFeatures={true}
   features={[
     {
       icon: Heart,

@@ -176,7 +176,7 @@ const Fabrics = () => {
         subtitle="Discover how our expert team provides specialized care for every type of fabric, ensuring your garments receive the perfect treatment they deserve."
         highlightText="Expert Care for Every Fabric"
         highlightIcon={Shield}
-        showFeatures={false}
+        showFeatures={true}
         features={[
           {
             icon: Sparkles,
