@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { AlertCircle, CheckCircle2, Send, Sparkles } from "lucide-react";
 import axios from "axios";
 import { form } from "framer-motion/client";
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 const BusinessProposalForm = () => {
   const [formData, setFormData] = useState({
     businessName: "",
@@ -404,7 +405,7 @@ const BusinessProposalForm = () => {
   </div>
 `;
 
-    await axios.post('http://localhost:5000/api/send-email', {
+    await axios.post(`${baseURL}/api/send-email`, {
       subject: `New Business Proposal Request from ${formData.businessName}`,
       text: `Business Name: ${formData.businessName}
 Contact Person: ${formData.contactPerson}

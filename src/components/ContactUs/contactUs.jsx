@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import { AlertCircle, CheckCircle2, Send, MapPin, Phone, Mail, Clock, MessageCircle } from 'lucide-react';
 import axios from 'axios';
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 const GetInTouchForm = () => {
   // --- User's improved logic ---
   const [formData, setFormData] = useState({
@@ -320,7 +321,7 @@ const handleSubmit = async (e) => {
   </div>
 `;
 
-    await axios.post('http://localhost:5000/api/send-email', {
+    await axios.post(`${baseURL}/api/send-email`, {
       subject: `New Query from ${formData.fullName}`,
       text: `
 Full Name: ${formData.fullName}
