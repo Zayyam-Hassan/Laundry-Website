@@ -230,7 +230,7 @@ const Fabrics = () => {
           customTitleStyle: { color: '#170d5c' }
         }}
       />
-      <CallToAction
+      {/* <CallToAction
         headline="Download Our Complete Care Guide"
         description="Get our comprehensive fabric care booklet with detailed instructions, stain removal tips, and professional recommendations."
         stats={[
@@ -244,7 +244,7 @@ const Fabrics = () => {
           Icon: Download,
         }}
         footerText="Free download • 2.5MB • Available in English and Arabic"
-      />
+      /> */}
     </div>
   );
 };

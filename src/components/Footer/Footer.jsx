@@ -207,7 +207,7 @@ const Footer = () => {
           </h3>
           <div className="mt-4 flex flex-col sm:flex-row gap-4">
             <Link
-              to="/app-store"
+              to="/"
               className="bg-black text-white px-6 py-3 rounded-lg flex items-center justify-center space-x-3 hover:bg-gray-800 transform hover:-translate-y-1 transition-all duration-300"
             >
               <img
@@ -221,7 +221,7 @@ const Footer = () => {
               </div>
             </Link>
             <Link
-              to="/google-play"
+              to="/"
               className="bg-black text-white px-6 py-3 rounded-lg flex items-center justify-center space-x-3 hover:bg-gray-800 transform hover:-translate-y-1 transition-all duration-300"
             >
               <img
@@ -256,13 +256,13 @@ const Footer = () => {
               </span>
             </div>
             <span className="mx-4">|</span>
-            <Link
-              to="/privacy-policy"
+            <a
+              href="/privacy-policy"
               target="_blank"
               className="relative transition-colors duration-300 text-white hover:text-[#d9b451]"
             >
               Privacy Policy
-            </Link>
+            </a>
           </div>
         </div>
 

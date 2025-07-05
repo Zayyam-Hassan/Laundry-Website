@@ -65,19 +65,6 @@ const Home = () => {
     primaryButtonHover: "hover:bg-yellow-500",
     secondaryButtonBg: "bg-transparent",
     secondaryButtonText: "text-white",
-    secondaryButtonBorder: "border-white/30",
-    secondaryButtonHover: "hover:bg-white/10 hover:border-white", // Deep blue gradient
-    titleColor: "text-white",
-    subtitleColor: "text-gray-300",
-    featureNumberBg: "bg-yellow-400",
-    featureNumberColor: "text-black",
-    featureTitleColor: "text-white",
-    featureDescriptionColor: "text-gray-300",
-    primaryButtonBg: "bg-yellow-400",
-    primaryButtonText: "text-black",
-    primaryButtonHover: "hover:bg-yellow-500",
-    secondaryButtonBg: "bg-transparent",
-    secondaryButtonText: "text-white",
     secondaryButtonBorder: "border-white",
     secondaryButtonHover: "hover:bg-white hover:text-gray-900",
   };
@@ -91,7 +78,7 @@ const Home = () => {
         subtitle="FarrariGo is Kuwait's first premium, subscription-based laundry service. Elegant care. Exceptional convenience."
         buttons={[
           {
-            text: "Subscribe Now",
+            text: "Book Now",
             variant: "primary",
             icon: ArrowRight,
           },
